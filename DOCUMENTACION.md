@@ -1272,7 +1272,7 @@ El sistema está diseñado para activar el nivel de riesgo y las recomendaciones
 
 ### Cómo activar el nivel de riesgo
 
-Cuando el director clínico entregue los valores, editar únicamente el archivo `backend/artifacts/config_riesgo.json`:
+Cuando el director clínico entregue los valores, editar únicamente el archivo `backend/artifacts/config_riesgo.json`, por ejemplo de la siguiente manera:
 
 ```json
 {
