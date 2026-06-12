@@ -1,0 +1,13 @@
+{
+  "umbral_clasificacion_positivo": 0.1303,
+  "PENDIENTE": "Los umbrales de nivel de riesgo y las recomendaciones aun no fueron entregados. Completar los valores nulos y las listas vacias cuando el director clinico los proporcione.",
+  "umbral_bajo_medio": null,
+  "umbral_medio_alto": null,
+  "regla_nivel": "bajo si la probabilidad es menor que umbral_bajo_medio, medio si es menor que umbral_medio_alto, alto en otro caso",
+  "recomendaciones_por_nivel": {
+    "bajo": [],
+    "medio": [],
+    "alto": []
+  },
+  "regla_alerta_transferencia": "Disparar alerta cuando la clasificacion sea Positivo y el nivel de riesgo sea alto, una vez definidos los umbrales"
+}

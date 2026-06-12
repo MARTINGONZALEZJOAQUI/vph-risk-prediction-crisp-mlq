@@ -1,0 +1,24 @@
+{
+  "name": "sistema-vph-backend",
+  "version": "1.0.0",
+  "description": "API RESTful del Sistema Predictivo de Riesgo VPH - Centro de Salud Alfonso Lopez",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "inferencia": "../.venv/Scripts/python.exe inferencia/servicio.py",
+    "test": "node --test tests/inferencia.test.js tests/api.test.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "supertest": "^6.3.4"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

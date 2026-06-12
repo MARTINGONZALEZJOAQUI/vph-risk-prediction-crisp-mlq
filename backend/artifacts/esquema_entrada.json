@@ -1,0 +1,146 @@
+{
+  "objetivo": "res_vph",
+  "archivos_modelo": {
+    "pkl": "modelo_vph.pkl",
+    "onnx": "modelo_vph.onnx",
+    "parametros_json": "modelo_parametros.json"
+  },
+  "umbral_clasificacion": 0.1303,
+  "variables_numericas": {
+    "edad": {
+      "tipo": "numero",
+      "minimo": 18.0,
+      "maximo": 69.0
+    },
+    "edad_primera_menstruacion": {
+      "tipo": "numero",
+      "minimo": 9.0,
+      "maximo": 17.0
+    },
+    "edad_primera_relacion_sexual": {
+      "tipo": "numero",
+      "minimo": 10.0,
+      "maximo": 27.0
+    },
+    "num_comp_sexuales": {
+      "tipo": "numero",
+      "minimo": 1.0,
+      "maximo": 21.0
+    },
+    "n_hijos": {
+      "tipo": "numero",
+      "minimo": 0.0,
+      "maximo": 13.0
+    }
+  },
+  "variables_categoricas": {
+    "procedencia": [
+      "Rural",
+      "Urbano"
+    ],
+    "e_conyugal": [
+      "Con pareja",
+      "Sin pareja"
+    ],
+    "e_socioecon": [
+      "Dos o más",
+      "Uno"
+    ],
+    "embarazos": [
+      "No",
+      "Si"
+    ],
+    "menopausia": [
+      "No",
+      "Si"
+    ],
+    "vida_sexual_activa": [
+      "No",
+      "Si"
+    ],
+    "met_plan_hormo": [
+      "No",
+      "Si"
+    ],
+    "fumador": [
+      "NO",
+      "SI"
+    ],
+    "cocina_lena": [
+      "No",
+      "Si"
+    ],
+    "sabe_que_sirve_citologia": [
+      "No",
+      "Si"
+    ],
+    "sabe_que_es_vph": [
+      "No",
+      "Si"
+    ],
+    "conoce_pruebas_vph": [
+      "No",
+      "Si"
+    ],
+    "conoce_vacuna_vph": [
+      "No",
+      "Si"
+    ],
+    "etnia": [
+      "Afro",
+      "Indígena",
+      "Mestiza"
+    ],
+    "nivel_edu_cat": [
+      "Ninguno",
+      "Primaria",
+      "Secundaria",
+      "Técnico / Univ."
+    ],
+    "esta_civil_cat": [
+      "Casada",
+      "Separada",
+      "Soltera"
+    ],
+    "ocupacion": [
+      "Ama de casa",
+      "Otras",
+      "Trab. Formal",
+      "Trab. Informal"
+    ],
+    "res_citologia_previa": [
+      "Anormal",
+      "NS/NR",
+      "Negativa"
+    ],
+    "infeccion_vph_previa": [
+      "NS/NR",
+      "No",
+      "Si"
+    ],
+    "met_plan_cat": [
+      "Barrera",
+      "Hormonales",
+      "Irreversibles",
+      "Mecanicos",
+      "Naturales",
+      "Ninguno"
+    ],
+    "presentado_ets": [
+      "NS/NR",
+      "No",
+      "Si"
+    ],
+    "fum_cat": [
+      "Diario",
+      "Ex-fumador",
+      "Nunca",
+      "Ocasional"
+    ],
+    "compañero_trab_sexuales": [
+      "NS/NR",
+      "No",
+      "Si"
+    ]
+  }
+}

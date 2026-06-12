@@ -1,0 +1,248 @@
+/* ============================================================
+   Sistema Predictivo VPH — Estilos globales
+   Paleta: Rosso Vinaccia (#9B2335) para positivo
+           Verde #255951 para negativo
+           Gris institucional para fondo
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-positivo:    #9B2335;   /* Rosso Vinaccia — resultado positivo */
+  --color-negativo:    #255951;   /* Verde — resultado negativo */
+  --color-primario:    #2C5F8A;   /* Azul institucional */
+  --color-fondo:       #F5F7FA;
+  --color-blanco:      #FFFFFF;
+  --color-texto:       #222222;
+  --color-texto-suave: #555555;
+  --color-borde:       #D1D8E0;
+  --color-advertencia: #B8860B;
+  --color-pendiente:   #8B6914;
+  --radio:             8px;
+  --sombra:            0 2px 8px rgba(0,0,0,0.12);
+  --fuente:            'Segoe UI', Arial, sans-serif;
+}
+
+body {
+  font-family: var(--fuente);
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-size: 15px;
+  line-height: 1.55;
+  min-height: 100vh;
+}
+
+h1 { font-size: 1.6rem; font-weight: 700; color: var(--color-primario); }
+h2 { font-size: 1.25rem; font-weight: 600; color: var(--color-primario); }
+h3 { font-size: 1.05rem; font-weight: 600; }
+
+a { color: var(--color-primario); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Contenedor principal ─────────────────────────────────── */
+.contenedor {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+/* ── Tarjeta ─────────────────────────────────────────────── */
+.tarjeta {
+  background: var(--color-blanco);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Botones ─────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.4rem;
+  border: none;
+  border-radius: var(--radio);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.88; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primario   { background: var(--color-primario); color: #fff; }
+.btn-positivo   { background: var(--color-positivo); color: #fff; }
+.btn-negativo   { background: var(--color-negativo); color: #fff; }
+.btn-secundario { background: #e0e6ed; color: var(--color-texto); }
+.btn-peligro    { background: #c0392b; color: #fff; }
+
+/* ── Formularios ─────────────────────────────────────────── */
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-texto-suave);
+}
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="date"],
+select,
+textarea {
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid var(--color-borde);
+  border-radius: var(--radio);
+  font-size: 0.95rem;
+  font-family: var(--fuente);
+  background: var(--color-blanco);
+  color: var(--color-texto);
+  transition: border-color 0.15s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primario);
+}
+.error-campo {
+  font-size: 0.82rem;
+  color: var(--color-positivo);
+}
+
+/* ── Grid de formulario ──────────────────────────────────── */
+.grid-formulario {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0 1.25rem;
+}
+
+/* ── Panel de resultado ──────────────────────────────────── */
+.panel-resultado {
+  border-radius: var(--radio);
+  padding: 1.5rem;
+  color: #fff;
+  text-align: center;
+}
+.panel-positivo { background: var(--color-positivo); }
+.panel-negativo { background: var(--color-negativo); }
+
+.clasificacion-texto {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 0.25rem;
+}
+.confiabilidad-texto {
+  font-size: 1.1rem;
+  opacity: 0.92;
+  margin-bottom: 1rem;
+}
+
+/* Barra de confiabilidad */
+.barra-confiabilidad-fondo {
+  background: rgba(255,255,255,0.3);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+.barra-confiabilidad-relleno {
+  height: 100%;
+  background: rgba(255,255,255,0.9);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* ── Alerta de transferencia ─────────────────────────────── */
+.alerta-transferencia {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  color: #664d03;
+  border-radius: var(--radio);
+  padding: 1rem 1.25rem;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+.alerta-pendiente {
+  background: #fff8e1;
+  border: 1.5px dashed var(--color-pendiente);
+  color: var(--color-pendiente);
+  border-radius: var(--radio);
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* ── Cabecera ────────────────────────────────────────────── */
+.cabecera {
+  background: var(--color-primario);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.cabecera-titulo { font-size: 1.1rem; font-weight: 700; }
+.cabecera-usuario { font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; gap: 0.75rem; }
+
+/* ── Tabla historial ─────────────────────────────────────── */
+.tabla-historial {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+}
+.tabla-historial th {
+  background: #e8eef4;
+  color: var(--color-primario);
+  font-weight: 700;
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+}
+.tabla-historial td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--color-borde);
+}
+.tabla-historial tr:hover td { background: #f0f4f8; }
+.badge-positivo {
+  background: var(--color-positivo);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.15rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.badge-negativo {
+  background: var(--color-negativo);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.15rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* ── Mensajes ────────────────────────────────────────────── */
+.mensaje-error   { color: var(--color-positivo); font-size: 0.9rem; }
+.mensaje-exito   { color: var(--color-negativo); font-size: 0.9rem; }
+.mensaje-cargando { color: var(--color-primario); font-size: 0.9rem; }
+
+/* ── Avisos de disclaimer clinico ────────────────────────── */
+.disclaimer {
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+  text-align: center;
+  padding: 0.5rem;
+  border-top: 1px solid var(--color-borde);
+  margin-top: 1rem;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .grid-formulario { grid-template-columns: 1fr; }
+  .cabecera-titulo  { font-size: 0.95rem; }
+}

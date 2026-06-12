@@ -1,0 +1,13 @@
+{
+  "campeon": "HistGB",
+  "tipo": "sklearn",
+  "umbral": 0.13025210084033614,
+  "estrategia_balanceo": "sin_balanceo",
+  "metrica_seleccion": "F1+menorFP",
+  "test_PR_AUC": 0.22581235685664214,
+  "test_ROC_AUC": 0.6286900022474331,
+  "test_Brier": 0.12260467019582778,
+  "archivos": [
+    "modelo_vph.joblib"
+  ]
+}
