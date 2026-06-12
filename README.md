@@ -6,6 +6,15 @@ Proyecto desarrollado para el Centro de Salud Alfonso López. El sistema estima 
 
 > Esta herramienta es un apoyo a la decisión clínica y no reemplaza el diagnóstico de laboratorio ni el criterio del profesional de salud.
 
+**Institución.** Universidad del Cauca, Popayán, Cauca
+
+**Elaborado por**:
+* `JOSE MARTIN GONZALEZ JOAQUI`
+* `BRIYITH VANEZA GUACAS NARVAEZ`
+* `KAROL TATIANA PALECHOR VALENCIA`
+* `YULIETH GABRIELA JARAMILLO YELA`
+
+
 ---
 
 ## Requisitos previos
