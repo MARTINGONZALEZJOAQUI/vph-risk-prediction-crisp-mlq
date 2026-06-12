@@ -162,6 +162,8 @@ HistGradientBoosting entrenado con scikit-learn sobre los datos del centro de sa
 
 El rendimiento refleja el techo del conjunto de datos disponible. Para mejorarlo se requieren predictores adicionales como resultado de HPV-DNA o citología actual. El modelo es un apoyo al triaje, no una herramienta de diagnóstico autónoma.
 
+Todo el desarrollo del modelo, desde la réplica del modelo de referencia y el estudio de balanceo hasta la coronación del ganador y su exportación, está documentado y ejecutado en el notebook [`MODEL_VPH_Final.ipynb`](MODEL_VPH_Final.ipynb).
+
 ---
 
 ## Pendiente
