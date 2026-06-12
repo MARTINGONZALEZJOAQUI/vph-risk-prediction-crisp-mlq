@@ -30,9 +30,10 @@
     - [Servicio de API](#104-servicio-de-api-serviciosapijs)
     - [Estilos](#105-estilos-estilosglobalcss)
 11. [Seguridad](#11-seguridad)
-12. [Flujo completo de una evaluación](#12-flujo-completo-de-una-evaluación)
-13. [Placeholders pendientes de datos clínicos](#13-placeholders-pendientes-de-datos-clínicos)
-14. [Glosario](#14-glosario)
+12. [Pruebas](#12-pruebas)
+13. [Flujo completo de una evaluación](#13-flujo-completo-de-una-evaluación)
+14. [Placeholders pendientes de datos clínicos](#14-placeholders-pendientes-de-datos-clínicos)
+15. [Glosario](#15-glosario)
 
 ---
 
@@ -164,6 +165,9 @@ sistema-vph/
 │   │       ├── evaluaciones.js
 │   │       ├── historial.js
 │   │       └── informe.js
+│   └── tests/
+│       ├── inferencia.test.js        3 pruebas unitarias del cliente de inferencia
+│       └── api.test.js               8 pruebas de integración de la API
 │
 └── frontend/
     ├── package.json
@@ -1032,7 +1036,7 @@ Define los rangos válidos y las opciones categóricas permitidas para la valida
 
 ### `config_riesgo.json`
 
-Controla el nivel de riesgo, las recomendaciones clínicas y la alerta de transferencia. **Actualmente con placeholders** (ver [sección 13](#13-placeholders-pendientes-de-datos-clínicos)).
+Controla el nivel de riesgo, las recomendaciones clínicas y la alerta de transferencia. **Actualmente con placeholders** (ver [sección 14](#14-placeholders-pendientes-de-datos-clínicos)).
 
 ---
 
@@ -1202,7 +1206,62 @@ Clases utilitarias principales: `.tarjeta`, `.btn`, `.btn-primario`, `.btn-posit
 
 ---
 
-## 12. Flujo completo de una evaluación
+## 12. Pruebas
+
+Las pruebas se ejecutan con el test runner nativo de Node.js (`node:test`), sin dependencias externas.
+
+```bash
+cd backend
+npm test
+# Ejecuta: node --test tests/inferencia.test.js tests/api.test.js
+```
+
+### `tests/inferencia.test.js` — Pruebas unitarias (3 pruebas)
+
+Verifican el cliente del microservicio (`modeloInferenciaVPH`) mockeando `fetch`, de modo que no dependen de que el servicio Python esté corriendo.
+
+| Prueba | Verificación |
+|--------|-------------|
+| Devuelve clasificación, probabilidad y porcentaje de riesgo | El objeto retornado tiene los tres campos con valores válidos |
+| Propaga error 503 si el servicio falla | `predecir()` rechaza con `status == 503` cuando el servicio no responde |
+| Umbral entre 0 y 1 | `modelo.umbral > 0 && modelo.umbral < 1` |
+
+### `tests/api.test.js` — Pruebas de integración (8 pruebas)
+
+Levantan la app en un puerto dinámico con una base de datos **en memoria** (`DB_PATH_OVERRIDE=':memory:'`) y mockean el microservicio de inferencia, así que no requieren ni Python ni un archivo de base de datos.
+
+| Prueba | Verificación |
+|--------|-------------|
+| `GET /api/health` | Estado 200, `body.estado == 'ok'` |
+| `POST /api/auth/login` credenciales incorrectas | Estado 401 |
+| `POST /api/auth/login` credenciales correctas | Estado 200, token presente, `rol == 'admin'` |
+| `GET /api/esquema` sin token | Estado 401 |
+| `GET /api/esquema` con token | Estado 200, `variables_numericas` y `variables_categoricas` presentes |
+| `POST /api/evaluaciones` | Estado 201, `id > 0`, clasificación válida, `porcentaje_riesgo` en `[0, 100]`, `nivel_riesgo == 'pendiente'` |
+| `GET /api/pacientes/11111111/historial` | Estado 200, array de 1 evaluación |
+| `GET /api/pacientes/inexistente/historial` | Estado 404 |
+
+### Resultado esperado
+
+```
+✔ predecir devuelve clasificacion, probabilidad y porcentaje de riesgo
+✔ predecir propaga error 503 si el servicio falla
+✔ umbral del modelo esta entre 0 y 1
+✔ GET /api/health devuelve estado ok
+✔ POST /api/auth/login con credenciales incorrectas devuelve 401
+✔ POST /api/auth/login con credenciales correctas devuelve token JWT
+✔ GET /api/esquema sin autenticacion devuelve 401
+✔ GET /api/esquema con token valido devuelve variables del modelo
+✔ POST /api/evaluaciones crea evaluacion y devuelve clasificacion
+✔ GET /api/pacientes/:id/historial devuelve historial de la paciente
+✔ GET /api/pacientes/inexistente/historial devuelve 404
+
+tests 11 · pass 11 · fail 0
+```
+
+---
+
+## 13. Flujo completo de una evaluación
 
 El siguiente diagrama muestra el recorrido completo de datos desde que la enfermera abre el formulario hasta que se genera el informe.
 
@@ -1249,7 +1308,7 @@ ENFERMERA
 
 ---
 
-## 13. Placeholders pendientes de datos clínicos
+## 14. Placeholders pendientes de datos clínicos
 
 El sistema está diseñado para activar el nivel de riesgo y las recomendaciones **sin modificar ningún archivo de código**, solo editando `backend/artifacts/config_riesgo.json`.
 
@@ -1308,7 +1367,7 @@ El servidor lee este archivo en cada evaluación (sin caché), por lo que los ca
 
 ---
 
-## 14. Glosario
+## 15. Glosario
 
 | Término | Definición |
 |---------|-----------|
