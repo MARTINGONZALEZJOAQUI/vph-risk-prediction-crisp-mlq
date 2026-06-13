@@ -124,6 +124,8 @@ sistema-vph/
       config_riesgo.json      Umbrales de nivel de riesgo (pendientes de definición clínica)
     inferencia/
       servicio.py             Microservicio Python que carga el modelo y devuelve el riesgo
+    scripts/
+      ejecutar-inferencia.js  Lanzador multiplataforma del microservicio (npm run inferencia)
     src/
       db/                     Esquema SQLite y conexión (node:sqlite)
       modelo/                 Cliente HTTP del microservicio + generador de recomendaciones

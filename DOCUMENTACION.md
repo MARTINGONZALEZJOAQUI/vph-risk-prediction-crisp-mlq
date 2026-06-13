@@ -137,6 +137,8 @@ sistema-vph/
 │   │   └── config_riesgo.json        Umbrales de nivel de riesgo (pendiente de completar)
 │   ├── inferencia/
 │   │   └── servicio.py               Microservicio Python que ejecuta el modelo y devuelve el riesgo
+│   ├── scripts/
+│   │   └── ejecutar-inferencia.js    Lanzador multiplataforma del microservicio (npm run inferencia)
 │   ├── src/
 │   │   ├── app.js                    Configura Express y exporta la app (sin arrancar)
 │   │   ├── server.js                 Semilla de BD + arranque del servidor HTTP
@@ -261,6 +263,8 @@ npm run dev
 ```
 
 El microservicio de inferencia debe estar en ejecución para que el backend pueda evaluar. Si no responde, el backend devuelve `503` al crear una evaluación. En desarrollo, Vite actúa como proxy: todas las peticiones a `/api` se reenvían a `http://localhost:3001`.
+
+> **Sobre `npm run inferencia`:** el script invoca el lanzador `backend/scripts/ejecutar-inferencia.js`, que detecta el intérprete del entorno `.venv` según el sistema operativo (`.venv\Scripts\python.exe` en Windows, `.venv/bin/python` en Linux y macOS) y arranca `inferencia/servicio.py`. Si el entorno virtual está en otra ubicación, se puede indicar un intérprete concreto con la variable de entorno `PYTHON_EXE`. Este lanzador evita el fallo de Windows en el que `cmd.exe` interpretaba las barras de la ruta del intérprete como opciones.
 
 ### Credenciales iniciales
 
