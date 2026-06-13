@@ -39,7 +39,7 @@ const ETIQUETAS_DETALLE = {
   res_citologia_previa: 'Resultado citología previa',
   infeccion_vph_previa: 'Infección VPH previa',
   presentado_ets: 'Ha presentado ETS',
-  compañero_trab_sexuales: 'Pareja con trabajadoras sexuales',
+  compañero_trab_sexuales: 'compañero_trab_sexuales',
   sabe_que_sirve_citologia: 'Sabe para qué sirve la citología',
   sabe_que_es_vph: 'Sabe qué es el VPH',
   conoce_pruebas_vph: 'Conoce pruebas del VPH',
