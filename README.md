@@ -85,30 +85,30 @@ cd ..
 
 Se necesitan **tres terminales** abiertas al mismo tiempo.
 
-**Terminal 1 — Microservicio de inferencia (Python):**
+**Terminal 1 Microservicio de inferencia (Python):**
 ```bash
 cd backend
 npm run inferencia
 ```
 Queda escuchando en `http://127.0.0.1:8001` con el modelo cargado. Debe estar activo para poder evaluar; si no responde, el backend devuelve `503` al crear una evaluación.
 
-> El script `inferencia` detecta automáticamente el intérprete del entorno `.venv` de la raíz del proyecto y funciona en Windows, Linux y macOS. Si tu `.venv` está en otra ubicación, puedes indicar el intérprete con la variable de entorno `PYTHON_EXE`.
+> El script `inferencia` detecta automáticamente el intérprete del entorno `.venv` de la raíz del proyecto y funciona en Windows, Linux y macOS. 
 
-**Terminal 2 — Backend (Node + Express):**
+**Terminal 2 Backend (Node + Express):**
 ```bash
 cd backend
 npm run dev
 ```
 Cuando veas `Sistema VPH en http://localhost:3001`, el backend está listo. La primera vez crea automáticamente la base de datos `vph.db` y el usuario administrador.
 
-**Terminal 3 — Frontend (React + Vite):**
+**Terminal 3 Frontend (React + Vite):**
 ```bash
 cd frontend
 npm run dev
 ```
 Abre `http://localhost:5173` en el navegador. En desarrollo, Vite redirige las peticiones `/api` al backend.
 
-**Credenciales iniciales:** usuario `admin` / contraseña `admin1234` (cámbiala en el primer inicio de sesión desde Administración de Usuarios).
+**Credenciales* usuario `admin` / contraseña `admin1234`.
 
 ---
 

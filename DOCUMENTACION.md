@@ -264,7 +264,7 @@ npm run dev
 
 El microservicio de inferencia debe estar en ejecución para que el backend pueda evaluar. Si no responde, el backend devuelve `503` al crear una evaluación. En desarrollo, Vite actúa como proxy: todas las peticiones a `/api` se reenvían a `http://localhost:3001`.
 
-> **Sobre `npm run inferencia`:** el script invoca el lanzador `backend/scripts/ejecutar-inferencia.js`, que detecta el intérprete del entorno `.venv` según el sistema operativo (`.venv\Scripts\python.exe` en Windows, `.venv/bin/python` en Linux y macOS) y arranca `inferencia/servicio.py`. Si el entorno virtual está en otra ubicación, se puede indicar un intérprete concreto con la variable de entorno `PYTHON_EXE`. Este lanzador evita el fallo de Windows en el que `cmd.exe` interpretaba las barras de la ruta del intérprete como opciones.
+> **`npm run inferencia`** es el script invoca el lanzador `backend/scripts/ejecutar-inferencia.js`, que detecta el intérprete del entorno `.venv` según el sistema operativo (`.venv\Scripts\python.exe` en Windows, `.venv/bin/python` en Linux y macOS) y arranca `inferencia/servicio.py`. Si el entorno virtual está en otra ubicación, se puede indicar un intérprete concreto con la variable de entorno `PYTHON_EXE`.
 
 ### Credenciales iniciales
 
@@ -273,7 +273,7 @@ El microservicio de inferencia debe estar en ejecución para que el backend pued
 | Usuario | `admin` |
 | Contraseña | `admin1234` |
 
-> **Cambiar la contraseña** en el primer inicio de sesión desde el panel de Administración de Usuarios.
+
 
 ---
 
