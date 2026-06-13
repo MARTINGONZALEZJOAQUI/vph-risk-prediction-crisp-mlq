@@ -33,12 +33,6 @@ export default function PanelResultadoRiesgo({ resultado, onNuevaEvaluacion, onV
         <div className="barra-confiabilidad-fondo">
           <div className="barra-confiabilidad-relleno" style={{ width: `${pct}%` }} />
         </div>
-
-        <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', opacity: 0.88 }}>
-          {esPositivo
-            ? 'El modelo indica probabilidad elevada de infección por VPH. Se recomienda seguimiento.'
-            : 'El modelo no detecta indicadores de riesgo elevado en los datos proporcionados.'}
-        </p>
       </div>
 
       {/* ── Alerta de transferencia ── */}
