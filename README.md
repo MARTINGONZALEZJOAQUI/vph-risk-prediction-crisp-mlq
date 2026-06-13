@@ -43,7 +43,7 @@ cd vph-risk-prediction-crisp-mlq
 
 ## Instalación
 
-El proyecto tiene tres piezas que se instalan una vez: el microservicio de inferencia (Python), el backend (Node) y el frontend (React).
+El proyecto tiene tres partes que se instalan, el microservicio de inferencia (Python), el backend (Node) y el frontend (React).
 
 ### 1. Entorno de Python para el microservicio
 
