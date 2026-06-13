@@ -162,7 +162,7 @@ La referencia completa de la API, la base de datos y los componentes está en `D
 
 ## Sobre el modelo
 
-HistGradientBoosting entrenado con scikit-learn sobre los datos del centro de salud, coronado por su equilibrio entre F1 y la menor tasa de falsos positivos. Se sirve desde un microservicio Python que el backend consume por HTTP, y entrega para cada paciente el porcentaje de riesgo de resultado positivo junto con la clasificación al umbral.
+HistGradientBoosting entrenado con scikit-learn sobre los datos del centro de salud, coronado por su equilibrio entre F1 y la menor tasa de falsos positivos. Se utiliza desde un microservicio Python que el backend consume por HTTP, y entrega para cada paciente el porcentaje de riesgo de resultado positivo junto con la clasificación al umbral.
 
 | Métrica | Valor |
 |---------|-------|
