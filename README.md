@@ -162,7 +162,13 @@ La referencia completa de la API, la base de datos y los componentes está en `D
 
 ## Sobre el modelo
 
-HistGradientBoosting entrenado con scikit-learn sobre los datos del centro de salud, coronado por su equilibrio entre F1 y la menor tasa de falsos positivos. Se utiliza desde un microservicio Python que el backend consume por HTTP, y entrega para cada paciente el porcentaje de riesgo de resultado positivo junto con la clasificación al umbral.
+HistGradientBoosting entrenado con scikit-learn sobre los datos del centro de salud, coronado por su equilibrio entre F1 y la menor tasa de falsos positivos. Se utiliza desde un microservicio Python que el backend consume por HTTP.
+
+Para cada paciente el modelo devuelve dos resultados.
+
+El primero es el **porcentaje de riesgo de resultado positivo**. Es la probabilidad que calcula el modelo de que el resultado de VPH de esa paciente sea positivo, expresada de 0 a 100, es decir la probabilidad multiplicada por 100. Por ejemplo, un valor de 36.6 % significa que el modelo estima esa probabilidad de positividad. Es el número que orienta la priorización para citología y seguimiento.
+
+El segundo es la **clasificación**, que puede ser Positivo o Negativo. Se obtiene al comparar esa probabilidad con el umbral de decisión de 0.1303, equivalente a cerca del 13 %. Si la probabilidad alcanza o supera el umbral, la paciente se marca como Positivo, y si queda por debajo se marca como Negativo. El umbral se eligió para equilibrar el F1 con la menor tasa de falsos positivos, de modo que no se dispare una alarma ante cualquier riesgo mínimo.
 
 | Métrica | Valor |
 |---------|-------|
