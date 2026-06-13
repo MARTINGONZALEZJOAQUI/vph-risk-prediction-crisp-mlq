@@ -108,7 +108,7 @@ npm run dev
 ```
 Abre `http://localhost:5173` en el navegador. En desarrollo, Vite redirige las peticiones `/api` al backend.
 
-**Credenciales* usuario `admin` / contraseña `admin1234`.
+**Credenciales** usuario `admin` / contraseña `admin1234`.
 
 ---
 
