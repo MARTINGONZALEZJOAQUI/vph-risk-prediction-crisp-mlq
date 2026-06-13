@@ -92,7 +92,7 @@ npm run inferencia
 ```
 Queda escuchando en `http://127.0.0.1:8001` con el modelo cargado. Debe estar activo para poder evaluar; si no responde, el backend devuelve `503` al crear una evaluación.
 
-> El script `inferencia` usa la ruta `../.venv/Scripts/python.exe` (Windows). En Linux o macOS ejecuta el microservicio con `../.venv/bin/python inferencia/servicio.py`.
+> El script `inferencia` detecta automáticamente el intérprete del entorno `.venv` de la raíz del proyecto y funciona en Windows, Linux y macOS. Si tu `.venv` está en otra ubicación, puedes indicar el intérprete con la variable de entorno `PYTHON_EXE`.
 
 **Terminal 2 — Backend (Node + Express):**
 ```bash

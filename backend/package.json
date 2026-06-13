@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "inferencia": "../.venv/Scripts/python.exe inferencia/servicio.py",
+    "inferencia": "node scripts/ejecutar-inferencia.js",
     "test": "node --test tests/inferencia.test.js tests/api.test.js"
   },
   "dependencies": {
