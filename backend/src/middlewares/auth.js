@@ -1,8 +1,4 @@
-/**
- * middlewares/auth.js
- * Verifica el token JWT en el encabezado Authorization: Bearer <token>.
- * Agrega req.usuario = { id, usuario, rol } para uso en controladores.
- */
+// middlewares/auth.js - Verifica el token JWT y adjunta req.usuario.
 'use strict';
 
 const jwt = require('jsonwebtoken');

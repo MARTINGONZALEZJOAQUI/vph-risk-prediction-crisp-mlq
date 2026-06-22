@@ -6,10 +6,7 @@
 
 const { obtenerDB } = require('../db/conexion');
 
-/**
- * Guarda una evaluacion y sus variables detalladas en una transaccion atomica.
- * Devuelve el id de la evaluacion creada.
- */
+// Guarda la evaluacion y sus variables en una transaccion; devuelve el id.
 function crear({ pacienteId, usuarioId, variablesJson, clasificacion, probabilidad, confiabilidad,
                  nivelRiesgo, recomendaciones, alertaTransferencia, variablesDetalle }) {
   const db = obtenerDB();

@@ -1,9 +1,4 @@
-/**
- * FormularioConsulta.jsx
- * Formulario de captura de variables clinicas.
- * Se construye dinamicamente a partir del esquema devuelto por GET /api/esquema.
- * Incluye campos del modelo VPH + campos adicionales del formulario CITOLOGIAS.
- */
+// FormularioConsulta.jsx - captura de variables clinicas; se construye desde GET /api/esquema.
 import { useState } from 'react';
 
 // Etiquetas legibles para cada variable del modelo
@@ -111,7 +106,6 @@ export default function FormularioConsulta({ esquema, onEnviar, cargando }) {
   return (
     <form onSubmit={enviar} noValidate>
 
-      {/* ── Datos de identificacion ── */}
       <div className="tarjeta">
         <h2 style={{ marginBottom: '1rem' }}>Datos de la paciente</h2>
         <div className="grid-formulario">
@@ -143,7 +137,6 @@ export default function FormularioConsulta({ esquema, onEnviar, cargando }) {
         </div>
       </div>
 
-      {/* ── Variables adicionales del formulario CITOLOGIAS ── */}
       <div className="tarjeta">
         <h2 style={{ marginBottom: '1rem' }}>Datos del formulario de citología</h2>
         <div className="grid-formulario">
@@ -161,7 +154,6 @@ export default function FormularioConsulta({ esquema, onEnviar, cargando }) {
         </div>
       </div>
 
-      {/* ── Variables numericas del modelo ── */}
       <div className="tarjeta">
         <h2 style={{ marginBottom: '1rem' }}>Variables clínicas (modelo predictivo)</h2>
         <div className="grid-formulario">
@@ -186,7 +178,6 @@ export default function FormularioConsulta({ esquema, onEnviar, cargando }) {
         </div>
       </div>
 
-      {/* ── Variables categoricas del modelo ── */}
       <div className="tarjeta">
         <h2 style={{ marginBottom: '1rem' }}>Variables de comportamiento y antecedentes</h2>
         <div className="grid-formulario">
@@ -208,7 +199,6 @@ export default function FormularioConsulta({ esquema, onEnviar, cargando }) {
         </div>
       </div>
 
-      {/* ── Disclaimer clinico ── */}
       <p className="disclaimer">
         Esta herramienta es un apoyo a la decisión clínica y no reemplaza el diagnóstico de laboratorio.
         Los resultados deben ser interpretados por personal de salud capacitado.

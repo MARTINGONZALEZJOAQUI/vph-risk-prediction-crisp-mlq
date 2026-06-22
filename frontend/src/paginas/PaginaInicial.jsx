@@ -1,7 +1,4 @@
-/**
- * PaginaInicial.jsx
- * Pagina de bienvenida: proposito del sistema, usuarios objetivo y como usarlo.
- */
+// PaginaInicial.jsx - pagina de bienvenida con descripcion del sistema.
 import { useNavigate } from 'react-router-dom';
 
 export default function PaginaInicial() {
@@ -9,7 +6,6 @@ export default function PaginaInicial() {
   return (
     <div className="contenedor">
 
-      {/* Encabezado institucional */}
       <div className="tarjeta" style={{ textAlign: 'center', background: '#2C5F8A', color: '#fff' }}>
         <h1 style={{ color: '#fff', marginBottom: '0.4rem' }}>
           Sistema Predictivo de Riesgo VPH
@@ -17,12 +13,8 @@ export default function PaginaInicial() {
         <p style={{ opacity: 0.9, fontSize: '1rem' }}>
           Centro de Salud Alfonso López — Universidad del Cauca
         </p>
-        <p style={{ opacity: 0.8, fontSize: '0.9rem', marginTop: '0.3rem' }}>
-          Grupo Salud Reproductiva
-        </p>
       </div>
 
-      {/* Proposito */}
       <div className="tarjeta">
         <h2>¿Para qué sirve este sistema?</h2>
         <p style={{ marginTop: '0.5rem', lineHeight: 1.7 }}>
@@ -41,16 +33,14 @@ export default function PaginaInicial() {
         </p>
       </div>
 
-      {/* Usuarios objetivo */}
       <div className="tarjeta">
         <h2>¿Quiénes usan este sistema?</h2>
         <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem', lineHeight: 1.8 }}>
-          <li><strong>Personal de enfermería</strong> — registra las variables del formulario de citología y consulta el resultado del modelo.</li>
-          <li><strong>Administrador del sistema</strong> — gestiona usuarios y consulta registros de auditoría.</li>
+          <li><strong>Personal de enfermería:</strong> registra las variables del formulario de citología y consulta el resultado del modelo.</li>
+          <li><strong>Administrador del sistema:</strong> gestiona usuarios y consulta registros de auditoría.</li>
         </ul>
       </div>
 
-      {/* Como se usa */}
       <div className="tarjeta">
         <h2>¿Cómo se usa?</h2>
         <ol style={{ marginTop: '0.5rem', paddingLeft: '1.5rem', lineHeight: 1.9 }}>
@@ -60,15 +50,6 @@ export default function PaginaInicial() {
           <li>Revise el resultado, las recomendaciones y genere el informe si es necesario.</li>
           <li>Consulte el historial de evaluaciones previas de cualquier paciente.</li>
         </ol>
-      </div>
-
-      {/* Aviso clinico */}
-      <div className="tarjeta" style={{ background: '#fff8e1', border: '1.5px solid #ffc107' }}>
-        <p style={{ fontSize: '0.9rem', color: '#664d03' }}>
-          <strong>Aviso:</strong> Esta herramienta es un apoyo a la decisión clínica.
-          Los resultados deben ser interpretados por personal de salud capacitado
-          y no reemplazan el diagnóstico de laboratorio ni el criterio profesional.
-        </p>
       </div>
 
       <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>

@@ -1,8 +1,4 @@
-/**
- * inferencia.test.js
- * Verifica que el cliente del microservicio (modeloInferenciaVPH) parsea correctamente
- * la respuesta y entrega el porcentaje de riesgo. Mockea fetch para no depender de Python.
- */
+// inferencia.test.js - Pruebas del cliente modeloInferenciaVPH (fetch mockeado).
 'use strict';
 
 const { test } = require('node:test');

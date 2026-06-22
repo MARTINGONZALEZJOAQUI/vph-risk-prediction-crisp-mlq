@@ -1,13 +1,4 @@
-/**
- * App.jsx
- * Enrutamiento principal y gestion de sesion del usuario.
- * Rutas:
- *   /           -> PaginaInicial
- *   /login      -> InicioSesion
- *   /consulta   -> Consulta (protegida)
- *   /historial  -> Historial (protegida)
- *   /admin      -> AdminUsuarios (protegida, solo admin)
- */
+// App.jsx - enrutamiento principal y gestion de sesion.
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, NavLink, useNavigate } from 'react-router-dom';
 import { logout } from './servicios/api.js';
@@ -17,12 +8,11 @@ import Consulta       from './paginas/Consulta.jsx';
 import Historial      from './paginas/Historial.jsx';
 import AdminUsuarios  from './paginas/AdminUsuarios.jsx';
 
-// ── Cabecera con navegacion ────────────────────────────────────────────────────
 function Cabecera({ usuario, onCerrarSesion }) {
   return (
     <header className="cabecera">
       <div className="cabecera-titulo">
-        Sistema VPH — Centro Alfonso López
+        Sistema Predictivo de Riesgo VPH — Centro de Salud Alfonso López
       </div>
       {usuario && (
         <nav className="cabecera-usuario">
@@ -48,13 +38,12 @@ function Cabecera({ usuario, onCerrarSesion }) {
   );
 }
 
-// ── Ruta protegida ─────────────────────────────────────────────────────────────
+// Redirige a /login si el usuario no está autenticado.
 function Protegida({ usuario, children }) {
   if (!usuario) return <Navigate to="/login" replace />;
   return children;
 }
 
-// ── Componente principal ───────────────────────────────────────────────────────
 export default function App() {
   const [usuario, setUsuario] = useState(() => {
     try {

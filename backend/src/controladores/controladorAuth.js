@@ -1,8 +1,4 @@
-/**
- * controladorAuth.js
- * Maneja autenticacion (login/logout) y gestion de usuarios (solo admin).
- * Usa bcryptjs para verificar contrasenas y jsonwebtoken para emitir tokens JWT.
- */
+// controladorAuth.js - Login/logout y gestion de usuarios (solo admin).
 'use strict';
 
 const bcrypt  = require('bcryptjs');

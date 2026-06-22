@@ -1,8 +1,4 @@
-/**
- * middlewares/errores.js
- * Manejador global de errores de Express.
- * Registra el error en consola y devuelve una respuesta JSON generica.
- */
+// middlewares/errores.js - Manejador global de errores de Express.
 'use strict';
 
 function manejadorErrores(err, req, res, next) { // eslint-disable-line no-unused-vars

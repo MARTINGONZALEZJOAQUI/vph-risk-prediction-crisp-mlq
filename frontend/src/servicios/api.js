@@ -1,8 +1,4 @@
-/**
- * api.js
- * Capa de comunicacion con el backend.
- * Todas las llamadas al API RESTful pasan por aqui.
- */
+// api.js - capa de comunicacion con el backend REST.
 
 const BASE = '/api';
 
@@ -24,8 +20,6 @@ async function manejarRespuesta(res) {
   return data;
 }
 
-// ── Autenticacion ──────────────────────────────────────────────────────────────
-
 export async function login(usuario, contrasena) {
   const res = await fetch(`${BASE}/auth/login`, {
     method: 'POST',
@@ -41,14 +35,10 @@ export async function logout() {
   sessionStorage.removeItem('vph_usuario');
 }
 
-// ── Esquema de entrada ─────────────────────────────────────────────────────────
-
 export async function obtenerEsquema() {
   const res = await fetch(`${BASE}/esquema`, { headers: cabeceras() });
   return manejarRespuesta(res);
 }
-
-// ── Evaluaciones ───────────────────────────────────────────────────────────────
 
 export async function crearEvaluacion(payload) {
   const res = await fetch(`${BASE}/evaluaciones`, {
@@ -64,8 +54,6 @@ export async function obtenerInforme(id) {
   return manejarRespuesta(res);
 }
 
-// ── Historial ──────────────────────────────────────────────────────────────────
-
 export async function historialPaciente(identificador) {
   const res = await fetch(
     `${BASE}/pacientes/${encodeURIComponent(identificador)}/historial`,
@@ -73,8 +61,6 @@ export async function historialPaciente(identificador) {
   );
   return manejarRespuesta(res);
 }
-
-// ── Administracion de usuarios (solo admin) ────────────────────────────────────
 
 export async function listarUsuarios() {
   const res = await fetch(`${BASE}/auth/usuarios`, { headers: cabeceras() });

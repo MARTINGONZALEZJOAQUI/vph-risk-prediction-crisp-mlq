@@ -1,11 +1,4 @@
-/**
- * conexion.js
- * Abre la base de datos SQLite usando el modulo built-in node:sqlite (Node >= 22).
- * Si el archivo vph.db no existe, lo crea y aplica el esquema.
- *
- * Variable de entorno DB_PATH_OVERRIDE: si se define (':memory:' o ruta alternativa),
- * se usa esa ruta en lugar del archivo vph.db (util para pruebas automatizadas).
- */
+// conexion.js - Singleton SQLite (node:sqlite). DB_PATH_OVERRIDE permite usar :memory: en tests.
 'use strict';
 
 const { DatabaseSync } = require('node:sqlite');

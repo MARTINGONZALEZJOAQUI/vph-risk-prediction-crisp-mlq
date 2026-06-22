@@ -1,7 +1,4 @@
-/**
- * Historial.jsx
- * Pagina de historial clinico por paciente.
- */
+// Historial.jsx - pagina de historial clinico por paciente.
 import { useState } from 'react';
 import VistaHistorialPaciente from '../componentes/VistaHistorialPaciente.jsx';
 import FormularioPostconsulta from '../componentes/FormularioPostconsulta.jsx';

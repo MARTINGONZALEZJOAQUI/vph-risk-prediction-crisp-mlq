@@ -1,7 +1,4 @@
-/**
- * Consulta.jsx
- * Pagina principal de consulta: flujo FormularioConsulta -> PanelResultadoRiesgo -> FormularioPostconsulta.
- */
+// Consulta.jsx - flujo de consulta: formulario, resultado e informe.
 import { useEffect, useState } from 'react';
 import { obtenerEsquema, crearEvaluacion } from '../servicios/api.js';
 import FormularioConsulta from '../componentes/FormularioConsulta.jsx';

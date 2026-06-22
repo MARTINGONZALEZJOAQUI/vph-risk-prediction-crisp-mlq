@@ -1,8 +1,4 @@
-/**
- * api.test.js
- * Pruebas de integracion de la API RESTful.
- * Corre con: node --test tests/api.test.js
- */
+// api.test.js - Pruebas de integracion de la API RESTful.
 'use strict';
 
 const { test }   = require('node:test');
@@ -10,13 +6,13 @@ const assert     = require('node:assert/strict');
 const http       = require('http');
 const bcrypt     = require('bcryptjs');
 
-// Usar base de datos en memoria para tests
+// DB en memoria para tests
 process.env.JWT_SECRET    = 'test_secret_pruebas';
-process.env.DB_PATH_OVERRIDE = ':memory:'; // senial para conexion.js en modo test
+process.env.DB_PATH_OVERRIDE = ':memory:';
 
 const app = require('../src/app');
 
-// Mock del microservicio de inferencia: el controlador llama fetch hacia el servicio Python.
+// mock del microservicio de inferencia
 global.fetch = async () => ({
   ok: true,
   json: async () => ({
@@ -31,7 +27,7 @@ let servidor;
 let baseUrl;
 let tokenAdmin;
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
+// helpers
 function peticion(metodo, ruta, body, token) {
   return new Promise((resolve, reject) => {
     const data    = body ? JSON.stringify(body) : null;
@@ -57,9 +53,9 @@ function peticion(metodo, ruta, body, token) {
   });
 }
 
-// ── Setup / teardown ───────────────────────────────────────────────────────────
+// setup / teardown
 test.before(async () => {
-  // Crear usuario admin en la DB de test
+  // usuario admin para los tests
   const { obtenerDB } = require('../src/db/conexion');
   const db   = obtenerDB();
   const hash = await bcrypt.hash('admin1234', 10);
@@ -67,7 +63,7 @@ test.before(async () => {
     "INSERT OR IGNORE INTO usuarios (nombre, usuario, password_hash, rol) VALUES (?, ?, ?, ?)"
   ).run('Administrador', 'admin', hash, 'admin');
 
-  // Levantar servidor en puerto dinamico
+  // servidor en puerto dinamico
   await new Promise(resolve => {
     servidor = app.listen(0, () => {
       baseUrl = `http://localhost:${servidor.address().port}`;
@@ -78,7 +74,7 @@ test.before(async () => {
 
 test.after(() => servidor.close());
 
-// ── Pruebas ────────────────────────────────────────────────────────────────────
+// pruebas
 test('GET /api/health devuelve estado ok', async () => {
   const r = await peticion('GET', '/api/health');
   assert.equal(r.status, 200);
@@ -131,7 +127,7 @@ test('POST /api/evaluaciones crea evaluacion y devuelve clasificacion', async ()
   assert.ok(r.body.id > 0, 'Debe devolver un id de evaluacion');
   assert.ok(['Positivo', 'Negativo'].includes(r.body.clasificacion));
   assert.ok(typeof r.body.porcentaje_riesgo === 'number' && r.body.porcentaje_riesgo >= 0 && r.body.porcentaje_riesgo <= 100);
-  // El mock del microservicio devuelve probabilidad 0.087 (< 0.1303) → nivel bajo
+  // mock devuelve prob 0.087 < umbral 0.1303, nivel esperado: bajo
   assert.equal(r.body.nivel_riesgo, 'bajo');
   assert.ok(Array.isArray(r.body.recomendaciones) && r.body.recomendaciones.length > 0,
             'debe devolver recomendaciones');

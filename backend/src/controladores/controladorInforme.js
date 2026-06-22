@@ -1,12 +1,9 @@
-/**
- * controladorInforme.js
- * Consolida identificacion de la paciente, variables, clasificacion, confiabilidad
- * y recomendaciones en un objeto estructurado para el informe imprimible.
- */
+// controladorInforme.js - Genera el objeto de informe imprimible para una evaluacion.
 'use strict';
 
 const repEval = require('../repositorios/repositorioEvaluaciones');
 const repAud  = require('../repositorios/repositorioAuditoria');
+const recoms  = require('../modelo/generadorRecomendaciones');
 
 /** GET /api/evaluaciones/:id/informe */
 function obtenerInforme(req, res, next) {
@@ -34,6 +31,10 @@ function obtenerInforme(req, res, next) {
       }
     })();
 
+    const { generales, propias } = recoms.porNivel(eval_.nivel_riesgo);
+    const recomendacionesGenerales = generales.length ? generales : recomendaciones;
+    const recomendacionesNivel     = propias;
+
     return res.json({
       informe: {
         id:                   eval_.id,
@@ -49,6 +50,8 @@ function obtenerInforme(req, res, next) {
         nivel_riesgo:         eval_.nivel_riesgo,
         alerta_transferencia: !!eval_.alerta_transferencia,
         recomendaciones,
+        recomendaciones_generales: recomendacionesGenerales,
+        recomendaciones_nivel:     recomendacionesNivel,
         variables:            JSON.parse(eval_.variables_json || '{}'),
         variables_detalle:    detalle || {}
       }

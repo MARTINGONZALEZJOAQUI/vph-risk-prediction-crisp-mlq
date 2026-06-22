@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-# Microservicio de inferencia del modelo VPH (HistGB). Carga el artefacto joblib una sola vez
-# y expone POST /predecir, que devuelve el porcentaje de riesgo de resultado positivo de la paciente.
-# La probabilidad que calcula el modelo ES el riesgo de positividad; el porcentaje es probabilidad*100.
+# servicio.py - Microservicio HTTP del modelo HistGB. Expone POST /predecir.
 import json, os, sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import joblib, numpy as np, pandas as pd

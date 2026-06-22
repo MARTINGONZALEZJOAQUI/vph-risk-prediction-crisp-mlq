@@ -1,9 +1,7 @@
-/**
- * VistaHistorialPaciente.jsx
- * Buscador por identificador y tabla cronologica de evaluaciones previas.
- */
+// VistaHistorialPaciente.jsx - buscador y tabla de evaluaciones previas por paciente.
 import { useState } from 'react';
 import { historialPaciente } from '../servicios/api.js';
+import { estiloNivel } from '../utils/nivelRiesgo.js';
 
 function formatearFecha(iso) {
   if (!iso) return '—';
@@ -39,7 +37,6 @@ export default function VistaHistorialPaciente({ onVerInforme }) {
 
   return (
     <div>
-      {/* ── Buscador ── */}
       <div className="tarjeta">
         <h2 style={{ marginBottom: '1rem' }}>Historial clínico por paciente</h2>
         <form onSubmit={buscar} style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
@@ -57,7 +54,6 @@ export default function VistaHistorialPaciente({ onVerInforme }) {
         {error && <p className="mensaje-error" style={{ marginTop: '0.5rem' }}>{error}</p>}
       </div>
 
-      {/* ── Resultado ── */}
       {historial !== null && (
         <div className="tarjeta">
           {pacienteInfo && (
@@ -83,16 +79,20 @@ export default function VistaHistorialPaciente({ onVerInforme }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {historial.map(ev => (
+                  {historial.map(ev => {
+                    const { color } = estiloNivel(ev.nivel_riesgo, ev.clasificacion);
+                    return (
                     <tr key={ev.id}>
                       <td>{formatearFecha(ev.fecha)}</td>
                       <td>
-                        <span className={ev.clasificacion === 'Positivo' ? 'badge-positivo' : 'badge-negativo'}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
+                          <span aria-hidden="true"
+                                style={{ width: 12, height: 12, borderRadius: '50%', background: color, flexShrink: 0 }} />
                           {ev.clasificacion}
                         </span>
                       </td>
                       <td>{Math.round(ev.probabilidad * 100)}%</td>
-                      <td style={{ textTransform: 'capitalize' }}>{ev.nivel_riesgo || '—'}</td>
+                      <td style={{ textTransform: 'capitalize', fontWeight: 600, color }}>{ev.nivel_riesgo || '—'}</td>
                       <td>{ev.registrado_por}</td>
                       <td>
                         <button
@@ -104,7 +104,8 @@ export default function VistaHistorialPaciente({ onVerInforme }) {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

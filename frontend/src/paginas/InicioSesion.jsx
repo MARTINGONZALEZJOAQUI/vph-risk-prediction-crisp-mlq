@@ -1,7 +1,4 @@
-/**
- * InicioSesion.jsx
- * Formulario de inicio de sesion. Guarda el token en sessionStorage.
- */
+// InicioSesion.jsx - formulario de login; guarda el token en sessionStorage.
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../servicios/api.js';
@@ -39,7 +36,7 @@ export default function InicioSesion({ onSesionIniciada }) {
       <div className="tarjeta">
         <h1 style={{ marginBottom: '0.25rem', textAlign: 'center' }}>Iniciar sesión</h1>
         <p style={{ textAlign: 'center', color: '#666', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-          Sistema Predictivo VPH — Centro Alfonso López
+          Sistema Predictivo de Riesgo VPH — Centro de Salud Alfonso López
         </p>
 
         <form onSubmit={enviar}>

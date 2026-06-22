@@ -1,9 +1,4 @@
-/**
- * AdminUsuarios.jsx
- * Panel de administracion de usuarios (solo rol admin).
- * Permite listar, crear, editar nombre/contraseña/rol y desactivar
- * usuarios de enfermeria. Las cuentas admin no son editables ni eliminables.
- */
+// AdminUsuarios.jsx - panel de administracion de usuarios.
 import { useEffect, useState } from 'react';
 import { listarUsuarios, crearUsuario, editarUsuario, eliminarUsuario } from '../servicios/api.js';
 
@@ -17,7 +12,6 @@ function formatearFecha(iso) {
   return new Date(iso).toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-// ── Modal de edición ──────────────────────────────────────────────────────────
 function ModalEditar({ usuario, onCerrar, onGuardado }) {
   const [form,    setForm]    = useState({ nombre: usuario.nombre, contrasena: '', rol: usuario.rol });
   const [errs,    setErrs]    = useState({});
@@ -118,7 +112,6 @@ function ModalEditar({ usuario, onCerrar, onGuardado }) {
   );
 }
 
-// ── Componente principal ───────────────────────────────────────────────────────
 export default function AdminUsuarios() {
   const [usuarios,   setUsuarios]   = useState([]);
   const [cargando,   setCargando]   = useState(true);
@@ -155,7 +148,6 @@ export default function AdminUsuarios() {
 
   useEffect(() => { cargarUsuarios(); }, []);
 
-  // ── Nuevo usuario ──
   function cambiarCampo(e) {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
@@ -196,7 +188,6 @@ export default function AdminUsuarios() {
     }
   }
 
-  // ── Eliminar usuario ──
   async function confirmarEliminar(u) {
     if (!window.confirm(
       `¿Desactivar al usuario "${u.usuario}" (${u.nombre})?\n\nEl usuario no podrá iniciar sesión. Esta acción queda registrada en auditoría.`
@@ -211,7 +202,6 @@ export default function AdminUsuarios() {
     }
   }
 
-  // ── Callback modal edición ──
   function onGuardado(mensaje) {
     setEditando(null);
     setExito(mensaje);
@@ -231,7 +221,6 @@ export default function AdminUsuarios() {
         <p className="mensaje-exito" style={{ marginBottom: '1rem' }}>{exito}</p>
       )}
 
-      {/* ── Lista de usuarios ── */}
       <div className="tarjeta">
         <h2 style={{ marginBottom: '1rem' }}>Usuarios del sistema</h2>
 
@@ -314,7 +303,6 @@ export default function AdminUsuarios() {
         )}
       </div>
 
-      {/* ── Formulario nuevo usuario ── */}
       <div className="tarjeta">
         <h2 style={{ marginBottom: '1rem' }}>Crear nuevo usuario</h2>
 
@@ -371,7 +359,6 @@ export default function AdminUsuarios() {
         </form>
       </div>
 
-      {/* ── Modal de edición ── */}
       {editando && (
         <ModalEditar
           usuario={editando}

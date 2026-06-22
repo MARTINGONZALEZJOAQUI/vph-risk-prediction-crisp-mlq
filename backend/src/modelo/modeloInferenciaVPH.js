@@ -1,11 +1,4 @@
-/**
- * modeloInferenciaVPH.js
- * Cliente del microservicio Python de inferencia. La ejecucion del modelo HistGB de
- * scikit-learn se delega en el microservicio, que carga el artefacto y predice.
- *
- * La probabilidad de positivo que devuelve el modelo ES el riesgo de resultado positivo
- * de la paciente; el porcentaje de riesgo es esa probabilidad multiplicada por 100.
- */
+// modeloInferenciaVPH.js - Cliente HTTP del microservicio Python de inferencia.
 'use strict';
 
 const path = require('path');
@@ -13,11 +6,7 @@ const meta = require(path.join(__dirname, '..', '..', 'artifacts', 'umbral.json'
 
 const SERVICIO = process.env.INFERENCIA_URL || 'http://127.0.0.1:8001';
 
-/**
- * Llama al microservicio y devuelve la prediccion.
- * @param {Object} datos - variables clinicas de la paciente
- * @returns {Promise<{ clasificacion: string, probabilidad_positivo: number, porcentaje_riesgo: number }>}
- */
+// Llama al microservicio y devuelve la prediccion.
 async function predecir(datos) {
   let resp;
   try {

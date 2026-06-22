@@ -1,12 +1,7 @@
--- ============================================================
---  Sistema Predictivo VPH - Esquema SQLite
---  Centro de Salud Alfonso Lopez, Universidad del Cauca
--- ============================================================
+-- esquema.sql - Sistema Predictivo VPH, Centro de Salud Alfonso Lopez
 PRAGMA foreign_keys = ON;
 
--- ------------------------------------------------------------
--- USUARIOS DEL SISTEMA (enfermeria y admin)
--- ------------------------------------------------------------
+-- USUARIOS DEL SISTEMA
 CREATE TABLE IF NOT EXISTS usuarios (
   id            INTEGER PRIMARY KEY AUTOINCREMENT,
   nombre        TEXT    NOT NULL,
@@ -14,28 +9,24 @@ CREATE TABLE IF NOT EXISTS usuarios (
   password_hash TEXT    NOT NULL,           -- bcrypt hash
   rol           TEXT    NOT NULL DEFAULT 'enfermeria' CHECK(rol IN ('enfermeria','admin')),
   activo        INTEGER NOT NULL DEFAULT 1,
-  creado_en     TEXT    NOT NULL DEFAULT (datetime('now'))
+  creado_en     TEXT    NOT NULL DEFAULT (datetime('now','localtime'))
 );
 
--- ------------------------------------------------------------
--- PACIENTES (solo identificador; los datos clinicos van en variables_evaluacion)
--- ------------------------------------------------------------
+-- PACIENTES
 CREATE TABLE IF NOT EXISTS pacientes (
   id            INTEGER PRIMARY KEY AUTOINCREMENT,
   identificador TEXT    NOT NULL UNIQUE,    -- cedula o tarjeta
   nombre        TEXT,                        -- nombre completo (opcional)
   telefono      TEXT,
-  creado_en     TEXT    NOT NULL DEFAULT (datetime('now'))
+  creado_en     TEXT    NOT NULL DEFAULT (datetime('now','localtime'))
 );
 
--- ------------------------------------------------------------
--- EVALUACIONES (resultado de cada ejecucion del modelo)
--- ------------------------------------------------------------
+-- EVALUACIONES
 CREATE TABLE IF NOT EXISTS evaluaciones (
   id                   INTEGER PRIMARY KEY AUTOINCREMENT,
   paciente_id          INTEGER NOT NULL REFERENCES pacientes(id),
   usuario_id           INTEGER NOT NULL REFERENCES usuarios(id),
-  fecha                TEXT    NOT NULL DEFAULT (datetime('now')),
+  fecha                TEXT    NOT NULL DEFAULT (datetime('now','localtime')),
   variables_json       TEXT    NOT NULL,    -- snapshot JSON de todas las variables
   clasificacion        TEXT    NOT NULL CHECK(clasificacion IN ('Positivo','Negativo')),
   probabilidad         REAL    NOT NULL,    -- probabilidad de positivo [0,1]
@@ -45,16 +36,12 @@ CREATE TABLE IF NOT EXISTS evaluaciones (
   alerta_transferencia INTEGER DEFAULT 0   -- 0|1, 0 mientras umbrales esten pendientes
 );
 
--- ------------------------------------------------------------
--- VARIABLES DE EVALUACION (tabla comprehensiva con todas las variables)
--- Incluye: variables de entrada del modelo (BD VPH) +
---          variables adicionales del formulario CITOLOGIAS
--- ------------------------------------------------------------
+-- VARIABLES DE EVALUACION (variables del modelo + adicionales del formulario)
 CREATE TABLE IF NOT EXISTS variables_evaluacion (
   id                              INTEGER PRIMARY KEY AUTOINCREMENT,
   evaluacion_id                   INTEGER NOT NULL UNIQUE REFERENCES evaluaciones(id),
 
-  -- === VARIABLES DEL FORMULARIO DE CITOLOGIAS (adicionales al modelo) ===
+  -- variables adicionales del formulario CITOLOGIAS
   no_placa                        TEXT,    -- No. de Placa
   eps                             TEXT,    -- EPS / aseguradora
   fecha_ultima_menstruacion       TEXT,    -- FUM
@@ -72,14 +59,14 @@ CREATE TABLE IF NOT EXISTS variables_evaluacion (
   fecha_envio_lamina              TEXT,    -- fecha de envio de lamina al laboratorio
   fecha_recibo_resultado          TEXT,    -- fecha de recibo del resultado
 
-  -- === VARIABLES NUMERICAS DEL MODELO ===
+  -- variables numericas del modelo
   edad                            REAL,    -- edad en anos [18-69]
   edad_primera_menstruacion       REAL,    -- edad menarca [9-17]
   edad_primera_relacion_sexual    REAL,    -- edad inicio relaciones [10-27]
   num_comp_sexuales               REAL,    -- numero de companeros sexuales [1-21]
   n_hijos                         REAL,    -- numero de hijos [0-13]
 
-  -- === VARIABLES CATEGORICAS DEL MODELO ===
+  -- variables categoricas del modelo
   procedencia                     TEXT,    -- Rural | Urbano
   e_conyugal                      TEXT,    -- Con pareja | Sin pareja
   e_socioecon                     TEXT,    -- Dos o mas | Uno
@@ -105,21 +92,17 @@ CREATE TABLE IF NOT EXISTS variables_evaluacion (
   companero_trab_sexuales         TEXT     -- NS/NR | No | Si
 );
 
--- ------------------------------------------------------------
--- AUDITORIA (log de operaciones sobre datos clinicos)
--- ------------------------------------------------------------
+-- AUDITORIA
 CREATE TABLE IF NOT EXISTS auditoria (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,
   usuario_id INTEGER REFERENCES usuarios(id),
   accion     TEXT    NOT NULL,
   detalle    TEXT,
   ip         TEXT,
-  fecha      TEXT    NOT NULL DEFAULT (datetime('now'))
+  fecha      TEXT    NOT NULL DEFAULT (datetime('now','localtime'))
 );
 
--- ------------------------------------------------------------
 -- INDICES
--- ------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_evaluaciones_paciente  ON evaluaciones(paciente_id);
 CREATE INDEX IF NOT EXISTS idx_evaluaciones_usuario   ON evaluaciones(usuario_id);
 CREATE INDEX IF NOT EXISTS idx_evaluaciones_fecha     ON evaluaciones(fecha);

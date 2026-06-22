@@ -1,8 +1,4 @@
-/**
- * middlewares/validacion.js
- * Valida las variables de entrada del formulario contra el esquema del modelo.
- * Usa esquema_entrada.json para verificar rangos numericos y valores categoricos permitidos.
- */
+// middlewares/validacion.js - Valida variables de entrada contra el esquema del modelo.
 'use strict';
 
 const path   = require('path');
@@ -15,7 +11,7 @@ function validarVariables(req, res, next) {
   // Validar numericas
   for (const [campo, cfg] of Object.entries(SCHEMA.variables_numericas)) {
     const val = datos[campo];
-    if (val === undefined || val === null || val === '') continue; // se imputara con mediana
+    if (val === undefined || val === null || val === '') continue; // se imputa con mediana
     const num = Number(val);
     if (isNaN(num)) {
       errores.push(`El campo ${campo} debe ser un numero`);
@@ -27,7 +23,7 @@ function validarVariables(req, res, next) {
   // Validar categoricas
   for (const [campo, opciones] of Object.entries(SCHEMA.variables_categoricas)) {
     const val = datos[campo];
-    if (val === undefined || val === null || val === '') continue; // se imputara con Desconocido
+    if (val === undefined || val === null || val === '') continue; // se imputa con Desconocido
     if (!opciones.includes(String(val))) {
       errores.push(`El campo ${campo} debe ser uno de: ${opciones.join(', ')}`);
     }

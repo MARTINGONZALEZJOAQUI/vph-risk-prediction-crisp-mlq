@@ -1,9 +1,4 @@
-/**
- * recomendaciones.test.js
- * Verifica que generadorRecomendaciones.calcular determina el nivel a partir de la
- * probabilidad y devuelve cuidados generales + recomendaciones del nivel, ademas de la
- * alerta de transferencia cuando corresponde.
- */
+// recomendaciones.test.js - Pruebas de generadorRecomendaciones.calcular.
 'use strict';
 
 const { test } = require('node:test');

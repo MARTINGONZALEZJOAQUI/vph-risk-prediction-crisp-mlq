@@ -1,8 +1,4 @@
-/**
- * controladorEvaluacion.js
- * Orquesta el flujo de captura de variables, inferencia del modelo y persistencia.
- * Tambien entrega el esquema de entrada para construir el formulario en el frontend.
- */
+// controladorEvaluacion.js - Captura variables, llama al modelo y persiste el resultado.
 'use strict';
 
 const path     = require('path');
@@ -35,14 +31,14 @@ async function crearEvaluacion(req, res, next) {
       return res.status(400).json({ error: 'Se requiere identificador del paciente' });
     }
 
-    // 1. Obtener o crear paciente
+    // obtener o crear paciente
     const pac = repPac.crearOObtener({
       identificador: paciente.identificador,
       nombre:        paciente.nombre,
       telefono:      paciente.telefono
     });
 
-    // 2. Ejecutar modelo de inferencia (microservicio Python). La probabilidad ES el riesgo de positivo.
+    // llamar al microservicio de inferencia
     let resultado;
     try {
       resultado = await modelo.predecir(variables || {});
@@ -52,11 +48,12 @@ async function crearEvaluacion(req, res, next) {
       });
     }
 
-    // 3. Calcular nivel de riesgo y recomendaciones (placeholder si no hay umbrales)
-    const { nivelRiesgo, recomendaciones, alertaTransferencia } =
+    // calcular nivel de riesgo y recomendaciones
+    const { nivelRiesgo, recomendaciones, recomendacionesGenerales,
+            recomendacionesNivel, alertaTransferencia } =
       recoms.calcular(resultado.clasificacion, resultado.probabilidad_positivo);
 
-    // 4. Construir objeto de variables detalladas para la tabla comprehensiva
+    // fusionar variables del modelo con las adicionales del formulario
     const variablesDetalle = {
       ...(variables_adicionales || {}),
       ...Object.fromEntries(
@@ -64,7 +61,7 @@ async function crearEvaluacion(req, res, next) {
       )
     };
 
-    // 5. Persistir evaluacion y variables
+    // persistir
     const evalId = repEval.crear({
       pacienteId:          pac.id,
       usuarioId:           req.usuario.id,
@@ -78,7 +75,7 @@ async function crearEvaluacion(req, res, next) {
       variablesDetalle
     });
 
-    // 6. Registro de auditoria
+    // auditoria
     repAud.registrar({
       usuarioId: req.usuario.id,
       accion:    'CREAR_EVALUACION',
@@ -93,6 +90,8 @@ async function crearEvaluacion(req, res, next) {
       porcentaje_riesgo:     resultado.porcentaje_riesgo,
       nivel_riesgo:         nivelRiesgo,
       recomendaciones,
+      recomendaciones_generales: recomendacionesGenerales,
+      recomendaciones_nivel:     recomendacionesNivel,
       alerta_transferencia: alertaTransferencia,
       paciente: {
         id:            pac.id,

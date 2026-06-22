@@ -1,8 +1,4 @@
-/**
- * app.js - Configura y exporta la aplicacion Express (sin arrancar el servidor).
- * El servidor se inicia en server.js para permitir imports sin efectos secundarios
- * (necesario para pruebas de integracion con node:test).
- */
+// app.js - Configura y exporta la aplicacion Express sin arrancar el servidor.
 'use strict';
 
 const express = require('express');
@@ -26,7 +22,7 @@ app.use(express.json());
 app.use('/artifacts', express.static(path.join(__dirname, '..', 'artifacts')));
 
 // Rutas de la API
-app.get('/api/esquema', verificarToken, obtenerEsquema);   // GET /api/esquema (plan §4)
+app.get('/api/esquema', verificarToken, obtenerEsquema);
 app.use('/api/auth',          rutasAuth);
 app.use('/api/evaluaciones',  rutasEvaluaciones);
 app.use('/api/pacientes',     rutasHistorial);

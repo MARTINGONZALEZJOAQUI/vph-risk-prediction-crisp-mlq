@@ -1,10 +1,7 @@
-/**
- * FormularioPostconsulta.jsx
- * Informe final imprimible desde el navegador (ventana de impresion del sistema).
- * Muestra todos los datos de la evaluacion consolidados.
- */
+// FormularioPostconsulta.jsx - informe imprimible de la evaluacion.
 import { useEffect, useState } from 'react';
 import { obtenerInforme } from '../servicios/api.js';
+import { estiloNivel } from '../utils/nivelRiesgo.js';
 
 function Fila({ etiqueta, valor }) {
   if (valor === undefined || valor === null || valor === '') return null;
@@ -79,8 +76,11 @@ export default function FormularioPostconsulta({ evaluacionId, onVolver }) {
   );
   if (!informe) return <p className="mensaje-cargando">Cargando informe...</p>;
 
-  const esPos = informe.clasificacion === 'Positivo';
-  const colorPanel = esPos ? '#9B2335' : '#255951';
+  const { color, fondo } = estiloNivel(informe.nivel_riesgo, informe.clasificacion);
+  const generales = informe.recomendaciones_generales || [];
+  const delNivel  = informe.recomendaciones_nivel || [];
+  const hayListasSeparadas = generales.length > 0 || delNivel.length > 0;
+  const combinadas = informe.recomendaciones || [];
 
   return (
     <div>
@@ -90,7 +90,6 @@ export default function FormularioPostconsulta({ evaluacionId, onVolver }) {
         <button className="btn btn-primario" onClick={() => window.print()}>Imprimir informe</button>
       </div>
 
-      {/* ── Contenido del informe ── */}
       <div className="tarjeta" id="area-informe">
 
         {/* Encabezado */}
@@ -118,12 +117,17 @@ export default function FormularioPostconsulta({ evaluacionId, onVolver }) {
         </table>
 
         {/* Resultado del modelo */}
-        <div style={{ background: colorPanel, color: '#fff', borderRadius: 8, padding: '1rem',
-                      marginBottom: '1rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '1.6rem', fontWeight: 700 }}>{informe.clasificacion}</div>
-          <div style={{ fontSize: '0.95rem', opacity: 0.9, marginTop: '0.25rem' }}>
+        <div style={{ background: fondo, color: '#1f2937', borderRadius: 8, borderLeft: `8px solid ${color}`,
+                      padding: '1rem', marginBottom: '1rem', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem' }}>
+            <span aria-hidden="true"
+                  style={{ width: 22, height: 22, borderRadius: '50%', background: color,
+                           flexShrink: 0, boxShadow: '0 0 0 3px rgba(255,255,255,0.7)' }} />
+            <span style={{ fontSize: '1.6rem', fontWeight: 700, color }}>{informe.clasificacion}</span>
+          </div>
+          <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '0.35rem' }}>
             Riesgo de resultado positivo: {informe.porcentaje_riesgo}% &nbsp;|&nbsp;
-            Nivel de riesgo: {informe.nivel_riesgo || 'pendiente'}
+            Nivel de riesgo: <span style={{ textTransform: 'capitalize', fontWeight: 700, color }}>{informe.nivel_riesgo || 'pendiente'}</span>
           </div>
         </div>
 
@@ -136,13 +140,34 @@ export default function FormularioPostconsulta({ evaluacionId, onVolver }) {
 
         {/* Recomendaciones */}
         <h3 style={{ marginBottom: '0.5rem' }}>Recomendaciones</h3>
-        {!informe.recomendaciones || informe.recomendaciones.length === 0 ? (
+        {hayListasSeparadas ? (
+          <div style={{ marginBottom: '1rem' }}>
+            {generales.length > 0 && (
+              <>
+                <h4 style={{ margin: '0.25rem 0 0.4rem', color: '#374151' }}>Recomendaciones generales</h4>
+                <ul style={{ paddingLeft: '1.25rem', lineHeight: 1.7, marginBottom: '0.75rem' }}>
+                  {generales.map((r, i) => <li key={i}>{r}</li>)}
+                </ul>
+              </>
+            )}
+            {delNivel.length > 0 && (
+              <>
+                <h4 style={{ margin: '0.25rem 0 0.4rem', color }}>
+                  Recomendaciones para el nivel de riesgo <span style={{ textTransform: 'capitalize' }}>({informe.nivel_riesgo})</span>
+                </h4>
+                <ul style={{ paddingLeft: '1.25rem', lineHeight: 1.7 }}>
+                  {delNivel.map((r, i) => <li key={i}>{r}</li>)}
+                </ul>
+              </>
+            )}
+          </div>
+        ) : combinadas.length === 0 ? (
           <div className="alerta-pendiente" style={{ marginBottom: '1rem' }}>
             Pendiente de definición clínica por el director del programa.
           </div>
         ) : (
           <ul style={{ paddingLeft: '1.25rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-            {informe.recomendaciones.map((r, i) => <li key={i}>{r}</li>)}
+            {combinadas.map((r, i) => <li key={i}>{r}</li>)}
           </ul>
         )}
 
