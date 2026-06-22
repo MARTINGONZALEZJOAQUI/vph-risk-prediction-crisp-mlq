@@ -2,10 +2,10 @@
  * generadorRecomendaciones.js
  * Lee config_riesgo.json y determina nivel de riesgo, recomendaciones y alerta de transferencia.
  *
- * Mientras los umbrales de nivel de riesgo no esten definidos, el campo nivel_riesgo
- * se devuelve como "pendiente" y las recomendaciones como lista vacia.
- * Cuando el director clinico complete los valores nulos en config_riesgo.json,
- * el sistema empezara a mostrar nivel y recomendaciones automaticamente sin cambiar el codigo.
+ * El nivel se calcula con la probabilidad de positivo en escala 0 a 1 contra umbral_bajo_medio
+ * y umbral_medio_alto. Las recomendaciones devueltas son los cuidados generales seguidos de las
+ * recomendaciones propias del nivel. Si algun umbral quedara en null, el nivel se devuelve como
+ * "pendiente" y las recomendaciones como lista vacia.
  */
 'use strict';
 
@@ -46,7 +46,9 @@ function calcular(clasificacion, probabilidad) {
     nivel = 'alto';
   }
 
-  const recs  = (cfg.recomendaciones_por_nivel[nivel] || []);
+  const generales = cfg.recomendaciones_generales || [];
+  const propias   = cfg.recomendaciones_por_nivel[nivel] || [];
+  const recs      = [...generales, ...propias];
   const alerta = clasificacion === 'Positivo' && nivel === 'alto';
 
   return {
