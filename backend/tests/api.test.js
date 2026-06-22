@@ -131,7 +131,12 @@ test('POST /api/evaluaciones crea evaluacion y devuelve clasificacion', async ()
   assert.ok(r.body.id > 0, 'Debe devolver un id de evaluacion');
   assert.ok(['Positivo', 'Negativo'].includes(r.body.clasificacion));
   assert.ok(typeof r.body.porcentaje_riesgo === 'number' && r.body.porcentaje_riesgo >= 0 && r.body.porcentaje_riesgo <= 100);
-  assert.equal(r.body.nivel_riesgo, 'pendiente'); // umbrales aun no definidos
+  // El mock del microservicio devuelve probabilidad 0.087 (< 0.1303) → nivel bajo
+  assert.equal(r.body.nivel_riesgo, 'bajo');
+  assert.ok(Array.isArray(r.body.recomendaciones) && r.body.recomendaciones.length > 0,
+            'debe devolver recomendaciones');
+  assert.ok(r.body.recomendaciones.some(x => x.startsWith('Lavado de manos')),
+            'incluye los cuidados generales');
 });
 
 test('GET /api/pacientes/:id/historial devuelve historial de la paciente', async () => {
