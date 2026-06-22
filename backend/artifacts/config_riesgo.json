@@ -1,13 +1,37 @@
 {
   "umbral_clasificacion_positivo": 0.1303,
-  "PENDIENTE": "Los umbrales de nivel de riesgo y las recomendaciones aun no fueron entregados. Completar los valores nulos y las listas vacias cuando el director clinico los proporcione.",
-  "umbral_bajo_medio": null,
-  "umbral_medio_alto": null,
-  "regla_nivel": "bajo si la probabilidad es menor que umbral_bajo_medio, medio si es menor que umbral_medio_alto, alto en otro caso",
+  "umbral_bajo_medio": 0.1303,
+  "umbral_medio_alto": 0.25,
+  "regla_nivel": "Sobre la probabilidad de positivo en escala 0 a 1: bajo si es menor que umbral_bajo_medio, medio si es menor que umbral_medio_alto, alto en otro caso",
+  "recomendaciones_generales": [
+    "Lavado de manos antes y después de entrar al baño.",
+    "Secado de la vulva de adelante y hacia atrás, sin devolverse.",
+    "Lavar la vulva con agua sin jabones.",
+    "Usar en el cuerpo jabones de pH neutro.",
+    "Usar solo ropa interior de algodón.",
+    "Dormir sin ropa interior.",
+    "Gestionar su menstruación sin productos químicos (copa, toalla ecológicas, disco, etc.).",
+    "Usar condón en todas sus prácticas sexuales.",
+    "En caso de que aplique cumplir con el esquema de VPH.",
+    "Alimentación sin azúcares y ultraprocesados.",
+    "No usar ropa apretada en la práctica de ejercicio."
+  ],
   "recomendaciones_por_nivel": {
-    "bajo": [],
-    "medio": [],
-    "alto": []
+    "bajo": [
+      "Fantástico que seas riesgo bajo, gracias por cuidarte, pero recuerda que reclamar el resultado es vital, porque solo este nos dirá si realmente estas sana.",
+      "Si eres menor o tienes 29 años, recuerda continuar con tu esquema de citología con periodicidad 1-3-3 en caso de que tu resultado sea negativo.",
+      "Si eres mayor o tienes 30 años, recuerda continuar con tu esquema de prueba de ADN/VPH en periodicidad 1-5-5. Según Resolución 3280 de 2018 en caso de que tu resultado sea negativo."
+    ],
+    "medio": [
+      "Es importante que entiendas que tener un riesgo no significa que tengas la enfermedad, por eso es vital que reclames el resultado y te adaptes a tu ruta de cuidado según tu necesidad.",
+      "La citología identifica lesiones previas a que aparezca el cáncer. En caso de que tu resultado salga alterado debes acudir al médico lo más pronto posible para que el te oriente los pasos a seguir.",
+      "En caso de que tu resultado sea negativo debes seguir con tus chequeos según tu rango de edad. Menor o igual 29 años (Citología 1-3-3) y entre los 30 a 65 años (ADN/VPH 1-5-5)."
+    ],
+    "alto": [
+      "Es importante que entiendas que tener un riesgo no significa que tengas la enfermedad, por eso es vital que reclames el resultado y te adaptes a tu ruta de cuidado según tu necesidad.",
+      "La citología identifica lesiones previas a que aparezca el cáncer. En caso de que tu resultado salga alterado debes acudir al médico lo más pronto posible para que el te oriente los pasos a seguir.",
+      "En caso de que tu resultado sea negativo debes seguir con tus chequeos según tu rango de edad. Menor o igual 29 años (Citología 1-3-3) y entre los 30 a 65 años (ADN/VPH 1-5-5)."
+    ]
   },
-  "regla_alerta_transferencia": "Disparar alerta cuando la clasificacion sea Positivo y el nivel de riesgo sea alto, una vez definidos los umbrales"
+  "regla_alerta_transferencia": "Disparar alerta cuando la clasificacion sea Positivo y el nivel de riesgo sea alto"
 }
