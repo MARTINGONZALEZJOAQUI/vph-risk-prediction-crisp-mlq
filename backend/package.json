@@ -7,7 +7,7 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "inferencia": "node scripts/ejecutar-inferencia.js",
-    "test": "node --test tests/inferencia.test.js tests/api.test.js"
+    "test": "node --test tests/inferencia.test.js tests/api.test.js tests/recomendaciones.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
