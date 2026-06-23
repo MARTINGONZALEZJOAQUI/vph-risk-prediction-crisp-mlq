@@ -7,7 +7,7 @@ export default function PanelResultadoRiesgo({ resultado, onNuevaEvaluacion, onV
   const {
     clasificacion, porcentaje_riesgo, nivel_riesgo,
     recomendaciones, recomendaciones_generales, recomendaciones_nivel,
-    alerta_transferencia, id
+    id
   } = resultado;
 
   const pct            = Math.round(porcentaje_riesgo);
@@ -33,13 +33,6 @@ export default function PanelResultadoRiesgo({ resultado, onNuevaEvaluacion, onV
           Riesgo de resultado positivo: {pct}%
         </div>
       </div>
-
-      {alerta_transferencia && (
-        <div className="alerta-transferencia">
-          ⚠ ALERTA DE TRANSFERENCIA: Esta paciente requiere derivación urgente a especialista
-          dado el resultado positivo con nivel de riesgo alto.
-        </div>
-      )}
 
       <div className="tarjeta" style={{ marginTop: '1rem' }}>
         <h3>Nivel de riesgo</h3>

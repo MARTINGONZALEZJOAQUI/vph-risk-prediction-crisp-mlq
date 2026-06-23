@@ -8,14 +8,14 @@ const { obtenerDB } = require('../db/conexion');
 
 // Guarda la evaluacion y sus variables en una transaccion; devuelve el id.
 function crear({ pacienteId, usuarioId, variablesJson, clasificacion, probabilidad, confiabilidad,
-                 nivelRiesgo, recomendaciones, alertaTransferencia, variablesDetalle }) {
+                 nivelRiesgo, recomendaciones, variablesDetalle }) {
   const db = obtenerDB();
 
   const insertEval = db.prepare(`
     INSERT INTO evaluaciones
       (paciente_id, usuario_id, variables_json, clasificacion, probabilidad, confiabilidad,
-       nivel_riesgo, recomendaciones, alerta_transferencia)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+       nivel_riesgo, recomendaciones)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   const COLUMNAS_DETALLE = [
@@ -46,8 +46,7 @@ function crear({ pacienteId, usuarioId, variablesJson, clasificacion, probabilid
       typeof variablesJson === 'string' ? variablesJson : JSON.stringify(variablesJson),
       clasificacion, probabilidad, confiabilidad,
       nivelRiesgo || 'pendiente',
-      recomendaciones ? JSON.stringify(recomendaciones) : null,
-      alertaTransferencia ? 1 : 0
+      recomendaciones ? JSON.stringify(recomendaciones) : null
     );
     evalId = r.lastInsertRowid;
     const vals = COLUMNAS_DETALLE.map(c => variablesDetalle ? (variablesDetalle[c] ?? null) : null);
@@ -76,7 +75,7 @@ function historialPorPaciente(pacienteId) {
   const db = obtenerDB();
   return db.prepare(`
     SELECT e.id, e.fecha, e.clasificacion, e.probabilidad, e.confiabilidad,
-           e.nivel_riesgo, e.alerta_transferencia, u.nombre AS registrado_por
+           e.nivel_riesgo, u.nombre AS registrado_por
     FROM evaluaciones e
     JOIN usuarios u ON u.id = e.usuario_id
     WHERE e.paciente_id = ?

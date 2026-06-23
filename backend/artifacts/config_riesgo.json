@@ -32,6 +32,5 @@
       "La citología identifica lesiones previas a que aparezca el cáncer. En caso de que tu resultado salga alterado debes acudir al médico lo más pronto posible para que el te oriente los pasos a seguir.",
       "En caso de que tu resultado sea negativo debes seguir con tus chequeos según tu rango de edad. Menor o igual 29 años (Citología 1-3-3) y entre los 30 a 65 años (ADN/VPH 1-5-5)."
     ]
-  },
-  "regla_alerta_transferencia": "Disparar alerta cuando la clasificacion sea Positivo y el nivel de riesgo sea alto"
+  }
 }

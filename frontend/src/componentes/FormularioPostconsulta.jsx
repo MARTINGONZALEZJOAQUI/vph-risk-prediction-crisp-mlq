@@ -131,13 +131,6 @@ export default function FormularioPostconsulta({ evaluacionId, onVolver }) {
           </div>
         </div>
 
-        {/* Alerta de transferencia */}
-        {informe.alerta_transferencia && (
-          <div className="alerta-transferencia" style={{ marginBottom: '1rem' }}>
-            ⚠ ALERTA: Se requiere derivación urgente a especialista.
-          </div>
-        )}
-
         {/* Recomendaciones */}
         <h3 style={{ marginBottom: '0.5rem' }}>Recomendaciones</h3>
         {hayListasSeparadas ? (

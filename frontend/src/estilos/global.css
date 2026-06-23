@@ -158,16 +158,6 @@ input:focus, select:focus, textarea:focus {
   transition: width 0.4s ease;
 }
 
-/* ── Alerta de transferencia ─────────────────────────────── */
-.alerta-transferencia {
-  background: #fff3cd;
-  border: 2px solid #ffc107;
-  color: #664d03;
-  border-radius: var(--radio);
-  padding: 1rem 1.25rem;
-  margin-top: 1rem;
-  font-weight: 600;
-}
 .alerta-pendiente {
   background: #fff8e1;
   border: 1.5px dashed var(--color-pendiente);

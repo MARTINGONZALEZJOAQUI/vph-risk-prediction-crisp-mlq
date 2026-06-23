@@ -48,7 +48,6 @@ function obtenerInforme(req, res, next) {
         probabilidad_positivo: eval_.probabilidad,
         porcentaje_riesgo:    Math.round(eval_.probabilidad * 1000) / 10,
         nivel_riesgo:         eval_.nivel_riesgo,
-        alerta_transferencia: !!eval_.alerta_transferencia,
         recomendaciones,
         recomendaciones_generales: recomendacionesGenerales,
         recomendaciones_nivel:     recomendacionesNivel,

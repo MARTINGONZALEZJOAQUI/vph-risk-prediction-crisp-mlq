@@ -1,6 +1,6 @@
 /**
  * generadorRecomendaciones.js
- * Lee config_riesgo.json y determina nivel de riesgo, recomendaciones y alerta de transferencia.
+ * Lee config_riesgo.json y determina nivel de riesgo y recomendaciones.
  */
 'use strict';
 
@@ -20,8 +20,7 @@ function calcular(clasificacion, probabilidad) {
       nivelRiesgo:               'pendiente',
       recomendaciones:           [],
       recomendacionesGenerales:  [],
-      recomendacionesNivel:      [],
-      alertaTransferencia:       false
+      recomendacionesNivel:      []
     };
   }
 
@@ -35,14 +34,12 @@ function calcular(clasificacion, probabilidad) {
   }
 
   const { generales, propias } = recomendacionesDeNivel(cfg, nivel);
-  const alerta = clasificacion === 'Positivo' && nivel === 'alto';
 
   return {
     nivelRiesgo:               nivel,
     recomendaciones:           [...generales, ...propias],
     recomendacionesGenerales:  generales,
-    recomendacionesNivel:      propias,
-    alertaTransferencia:       alerta
+    recomendacionesNivel:      propias
   };
 }
 

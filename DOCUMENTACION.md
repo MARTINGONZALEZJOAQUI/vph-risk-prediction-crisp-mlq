@@ -50,7 +50,7 @@ El **Sistema Predictivo de Riesgo VPH** es una herramienta de apoyo a la decisi�
 - Informe imprimible desde el navegador.
 - Administración de usuarios con RBAC (roles: `enfermeria` y `admin`).
 - Log de auditoría completo sobre toda operación clínica.
-- Nivel de riesgo (`bajo`, `medio`, `alto`) con color propio y alerta de derivación urgente, más un bloque de cuidados generales que se muestra siempre y las recomendaciones específicas del nivel obtenido. Los umbrales y los textos se editan en `config_riesgo.json` sin tocar el código.
+- Nivel de riesgo (`bajo`, `medio`, `alto`) con color propio, más un bloque de cuidados generales que se muestra siempre y las recomendaciones específicas del nivel obtenido. Los umbrales y los textos se editan en `config_riesgo.json` sin tocar el código.
 
 ### Limitaciones conocidas del modelo
 
@@ -193,7 +193,7 @@ sistema-vph/
         │   └── AdminUsuarios.jsx     Gestión de usuarios (solo admin)
         └── componentes/
             ├── FormularioConsulta.jsx       Formulario dinámico de variables clínicas
-            ├── PanelResultadoRiesgo.jsx     Panel de resultado con colores y alerta
+            ├── PanelResultadoRiesgo.jsx     Panel de resultado con colores por nivel
             ├── VistaHistorialPaciente.jsx   Buscador + tabla de evaluaciones
             └── FormularioPostconsulta.jsx   Informe imprimible
 ```
@@ -327,8 +327,8 @@ La base de datos es un archivo SQLite único (`vph.db`) ubicado en la raíz de `
 └──────────────┘       │ confiabilidad      │       ┌──────────────┐
                        │ nivel_riesgo       │       │   pacientes   │
 ┌──────────────┐       │ recomendaciones    │       ├──────────────┤
-│   auditoria  │       │ alerta_transf...   │  ┌───│ id (PK)      │
-├──────────────┤       └────────────────────┘  │   │ identificador│
+│   auditoria  │       └────────────────────┘  ┌───│ id (PK)      │
+├──────────────┤                               │   │ identificador│
 │ id (PK)      │                               │   │ nombre       │
 │ usuario_id   │       ┌────────────────────┐  │   │ telefono     │
 │ accion       │       │    evaluaciones     │◀─┘   │ creado_en    │
@@ -382,7 +382,6 @@ Resultado de cada ejecución del modelo predictivo.
 | `confiabilidad` | REAL | Copia de la probabilidad de positivo ∈ [0, 1], conservada por compatibilidad |
 | `nivel_riesgo` | TEXT | `bajo`, `medio`, `alto` o `pendiente` |
 | `recomendaciones` | TEXT | JSON array de recomendaciones clínicas |
-| `alerta_transferencia` | INTEGER | `1` si requiere derivación urgente, `0` si no |
 
 #### `variables_evaluacion`
 
@@ -558,12 +557,10 @@ Lee `artifacts/config_riesgo.json` en cada llamada (sin caché), lo que permite 
 Si umbral_bajo_medio = null  O  umbral_medio_alto = null:
     → nivel_riesgo = "pendiente"   (red de seguridad si el archivo queda incompleto)
     → recomendaciones = []
-    → alerta_transferencia = false
 Sino:
     Si prob < umbral_bajo_medio   → nivel = "bajo"    (umbral_bajo_medio = 0.1303)
     Si prob < umbral_medio_alto   → nivel = "medio"   (umbral_medio_alto = 0.25)
     En otro caso                  → nivel = "alto"
-    alerta_transferencia = (clasificacion == "Positivo") AND (nivel == "alto")
 ```
 
 Las recomendaciones se entregan en dos listas, los cuidados generales que se muestran siempre y las propias del nivel obtenido, además de la lista combinada que conserva el orden de los generales seguidos de los del nivel. La función `porNivel(nivel)` reconstruye esas dos listas a partir del nivel ya guardado, de modo que el historial y el informe también las muestran separadas.
@@ -575,8 +572,7 @@ Las recomendaciones se entregan en dos listas, los cuidados generales que se mue
   "nivelRiesgo": "bajo",
   "recomendaciones": ["Lavado de manos antes y después de entrar al baño.", "..."],
   "recomendacionesGenerales": ["Lavado de manos antes y después de entrar al baño.", "..."],
-  "recomendacionesNivel": ["Fantástico que seas riesgo bajo, gracias por cuidarte...", "..."],
-  "alertaTransferencia": false
+  "recomendacionesNivel": ["Fantástico que seas riesgo bajo, gracias por cuidarte...", "..."]
 }
 ```
 
@@ -931,7 +927,6 @@ Crea una evaluación de riesgo VPH. Este es el endpoint principal del sistema.
   "recomendaciones": ["Lavado de manos antes y después de entrar al baño.", "..."],
   "recomendaciones_generales": ["Lavado de manos antes y después de entrar al baño.", "..."],
   "recomendaciones_nivel": ["Fantástico que seas riesgo bajo, gracias por cuidarte...", "..."],
-  "alerta_transferencia": false,
   "paciente": {
     "id": 7,
     "identificador": "12345678",
@@ -968,7 +963,6 @@ Devuelve el historial cronológico (más reciente primero) de una paciente.
       "clasificacion": "Negativo",
       "probabilidad": 0.08741,
       "nivel_riesgo": "bajo",
-      "alerta_transferencia": 0,
       "registrado_por": "Enfermera López"
     }
   ]
@@ -1001,7 +995,6 @@ Devuelve todos los datos de una evaluación consolidados para el informe imprimi
     "probabilidad_positivo": 0.08741,
     "porcentaje_riesgo": 8.7,
     "nivel_riesgo": "bajo",
-    "alerta_transferencia": false,
     "recomendaciones": ["Lavado de manos antes y después de entrar al baño.", "..."],
     "recomendaciones_generales": ["Lavado de manos antes y después de entrar al baño.", "..."],
     "recomendaciones_nivel": ["Fantástico que seas riesgo bajo, gracias por cuidarte...", "..."],
@@ -1051,7 +1044,7 @@ Define los rangos válidos y las opciones categóricas permitidas para la valida
 
 ### `config_riesgo.json`
 
-Controla el nivel de riesgo, los cuidados generales, las recomendaciones por nivel y la alerta de transferencia. Define los umbrales `umbral_bajo_medio` (0.1303) y `umbral_medio_alto` (0.25) y los textos que ve la paciente (ver [sección 14](#14-nivel-de-riesgo-y-recomendaciones)).
+Controla el nivel de riesgo, los cuidados generales y las recomendaciones por nivel. Define los umbrales `umbral_bajo_medio` (0.1303) y `umbral_medio_alto` (0.25) y los textos que ve la paciente (ver [sección 14](#14-nivel-de-riesgo-y-recomendaciones)).
 
 ---
 
@@ -1142,7 +1135,6 @@ Muestra el resultado con un color que depende del nivel de riesgo, tomado de `ut
 Incluye:
 - Un círculo de ese color junto a la clasificación (Negativo o Positivo), con el texto de la clasificación en el mismo color.
 - Porcentaje de riesgo de resultado positivo.
-- Alerta de transferencia (fondo amarillo, borde naranja) cuando `alerta_transferencia = true`.
 - Nivel de riesgo, marcado con un punto del color correspondiente.
 - Recomendaciones en dos bloques: **Recomendaciones generales** y, debajo, **Recomendaciones para tu nivel de riesgo**.
 - Aviso clínico.
@@ -1162,10 +1154,9 @@ Secciones del informe:
 1. Encabezado institucional con fecha, evaluador y número de evaluación.
 2. Datos de la paciente.
 3. Panel de resultado con color según el nivel de riesgo y un círculo del mismo color junto a la clasificación.
-4. Alerta de transferencia (si aplica).
-5. Recomendaciones en dos bloques, los cuidados generales y los del nivel obtenido.
-6. Tabla de variables registradas (etiquetas legibles para todas las columnas).
-7. Aviso clínico.
+4. Recomendaciones en dos bloques, los cuidados generales y los del nivel obtenido.
+5. Tabla de variables registradas (etiquetas legibles para todas las columnas).
+6. Aviso clínico.
 
 ---
 
@@ -1203,7 +1194,7 @@ Sistema de diseño basado en variables CSS:
 | `--color-advertencia` | `#B8860B` | Nivel de riesgo medio |
 | `--color-pendiente` | `#8B6914` | Zona de placeholders pendientes |
 
-Clases utilitarias principales: `.tarjeta`, `.btn`, `.btn-primario`, `.btn-positivo`, `.btn-negativo`, `.grid-formulario`, `.panel-resultado`, `.panel-positivo`, `.panel-negativo`, `.badge-positivo`, `.badge-negativo`, `.alerta-transferencia`, `.alerta-pendiente`, `.disclaimer`.
+Clases utilitarias principales: `.tarjeta`, `.btn`, `.btn-primario`, `.btn-positivo`, `.btn-negativo`, `.grid-formulario`, `.panel-resultado`, `.panel-positivo`, `.panel-negativo`, `.badge-positivo`, `.badge-negativo`, `.alerta-pendiente`, `.disclaimer`.
 
 ---
 
@@ -1263,10 +1254,10 @@ Verifican `generadorRecomendaciones.calcular` con los umbrales ya definidos, sin
 
 | Prueba | Verificación |
 |--------|-------------|
-| Riesgo bajo | Con probabilidad menor que 0.1303 el nivel es `bajo`, sin alerta, y la lista incluye los cuidados generales en primer lugar |
-| Riesgo medio | Con probabilidad entre 0.1303 y 0.25 el nivel es `medio`, sin alerta |
-| Riesgo alto con Positivo | Con probabilidad de 0.25 o más y clasificación Positivo el nivel es `alto` y dispara la alerta de transferencia |
-| Riesgo alto con Negativo | Con nivel `alto` pero clasificación Negativo no se dispara la alerta |
+| Riesgo bajo | Con probabilidad menor que 0.1303 el nivel es `bajo` y la lista incluye los cuidados generales en primer lugar |
+| Riesgo medio | Con probabilidad entre 0.1303 y 0.25 el nivel es `medio` y aparece el texto propio de ese nivel |
+| Riesgo alto | Con probabilidad de 0.25 o más el nivel es `alto` y aparece el texto propio de ese nivel |
+| Listas separadas | Las recomendaciones se devuelven en dos listas, los cuidados generales y las propias del nivel obtenido |
 
 ### Resultado esperado
 
@@ -1284,8 +1275,8 @@ Verifican `generadorRecomendaciones.calcular` con los umbrales ya definidos, sin
 ✔ GET /api/pacientes/inexistente/historial devuelve 404
 ✔ riesgo bajo cuando la probabilidad es menor que 0.1303
 ✔ riesgo medio cuando la probabilidad esta entre 0.1303 y 0.25
-✔ riesgo alto con Positivo dispara alerta de transferencia
-✔ riesgo alto con Negativo no dispara alerta
+✔ riesgo alto cuando la probabilidad alcanza o supera 0.25
+✔ las recomendaciones separan generales y propias del nivel
 
 tests 15 · pass 15 · fail 0
 ```
@@ -1315,7 +1306,7 @@ ENFERMERA
    │           │     ├─ modeloInferenciaVPH.predecir(variables)   ← HTTP al microservicio Python
    │           │     │     → {clasificacion, probabilidad_positivo, porcentaje_riesgo}
    │           │     ├─ generadorRecomendaciones.calcular()
-   │           │     │     → {nivelRiesgo, recomendaciones, alertaTransferencia}
+   │           │     │     → {nivelRiesgo, recomendaciones, recomendacionesGenerales, recomendacionesNivel}
    │           │     ├─ repositorioEvaluaciones.crear()   ← transacción SQLite
    │           │     │     → INSERT evaluaciones
    │           │     │     → INSERT variables_evaluacion
@@ -1327,7 +1318,6 @@ ENFERMERA
    │        - Color segun el nivel: verde bajo, ambar medio, rojo alto
    │        - Circulo del color junto a la clasificacion
    │        - Porcentaje de riesgo de positivo
-   │        - Alerta de transferencia si corresponde
    │        - Nivel de riesgo y recomendaciones (generales + del nivel)
    │
    └─ 4. Genera el informe (opcional)
@@ -1358,15 +1348,14 @@ El nivel de riesgo y las recomendaciones se controlan por completo desde `backen
     "bajo":  ["Fantástico que seas riesgo bajo, gracias por cuidarte...", "..."],
     "medio": ["Es importante que entiendas que tener un riesgo no significa que tengas la enfermedad...", "..."],
     "alto":  ["Es importante que entiendas que tener un riesgo no significa que tengas la enfermedad...", "..."]
-  },
-  "regla_alerta_transferencia": "Disparar alerta cuando la clasificacion sea Positivo y el nivel de riesgo sea alto"
+  }
 }
 ```
 
 ### Criterio de los umbrales
 
 - **`umbral_bajo_medio = 0.1303`** se ancló en el mismo umbral de clasificación, de modo que toda paciente Negativa queda en nivel `bajo` y nunca aparece la contradicción de una Positiva con riesgo bajo.
-- **`umbral_medio_alto = 0.25`** parte la franja de positivas para dejar el nivel `alto` como una minoría accionable, que es la que dispara la alerta de derivación urgente.
+- **`umbral_medio_alto = 0.25`** parte la franja de positivas para dejar el nivel `alto` como una minoría accionable, la de mayor prioridad para citología y seguimiento.
 
 Con estos cortes, alrededor del 54 % de las evaluaciones cae en `bajo`, el 35 % en `medio` y el 10 % en `alto`.
 
@@ -1380,7 +1369,7 @@ Para cambiar los cortes o los textos, editar `backend/artifacts/config_riesgo.js
 |-------|--------------|-----------------|
 | `bajo` | menor que 0.1303 | Cuidados generales + 3 del nivel bajo |
 | `medio` | entre 0.1303 y 0.25 | Cuidados generales + 3 del nivel intermedio |
-| `alto` | 0.25 o más | Cuidados generales + 3 del nivel alto, más la alerta de transferencia si es Positivo |
+| `alto` | 0.25 o más | Cuidados generales + 3 del nivel alto |
 
 Si alguno de los dos umbrales se dejara en `null`, el sistema vuelve al estado `pendiente`, con `nivel_riesgo = "pendiente"` y sin recomendaciones, como red de seguridad.
 
@@ -1396,7 +1385,6 @@ Si alguno de los dos umbrales se dejara en `null`, el sistema vuelve al estado `
 | **Porcentaje de riesgo** | La probabilidad de resultado positivo expresada en escala de 0 a 100, es decir `probabilidad × 100`. Es el número que el sistema entrega al personal de salud. |
 | **Umbral de clasificación** | Valor 0.1303. Si `probabilidad ≥ umbral`, se clasifica como Positivo. Seleccionado para maximizar el F1-score con la menor tasa de falsos positivos. |
 | **Nivel de riesgo** | Banda de riesgo a partir del porcentaje: `bajo` por debajo del 13 %, `medio` entre el 13 % y el 25 %, `alto` del 25 % en adelante. |
-| **Alerta de transferencia** | Indicación de derivación urgente a especialista. Se activa cuando la clasificación es Positiva y el nivel de riesgo es `alto`. |
 | **FCE** | Frontera-Control-Entidad. Patrón arquitectónico usado para organizar las clases del sistema. |
 | **JWT** | JSON Web Token. Token firmado que se emite al hacer login y se verifica en cada petición protegida. |
 | **RBAC** | Role-Based Access Control. Control de acceso por roles: `enfermeria` y `admin`. |

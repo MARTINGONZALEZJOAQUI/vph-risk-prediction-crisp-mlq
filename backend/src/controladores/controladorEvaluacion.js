@@ -50,7 +50,7 @@ async function crearEvaluacion(req, res, next) {
 
     // calcular nivel de riesgo y recomendaciones
     const { nivelRiesgo, recomendaciones, recomendacionesGenerales,
-            recomendacionesNivel, alertaTransferencia } =
+            recomendacionesNivel } =
       recoms.calcular(resultado.clasificacion, resultado.probabilidad_positivo);
 
     // fusionar variables del modelo con las adicionales del formulario
@@ -71,7 +71,6 @@ async function crearEvaluacion(req, res, next) {
       confiabilidad:       resultado.probabilidad_positivo,
       nivelRiesgo,
       recomendaciones,
-      alertaTransferencia,
       variablesDetalle
     });
 
@@ -92,7 +91,6 @@ async function crearEvaluacion(req, res, next) {
       recomendaciones,
       recomendaciones_generales: recomendacionesGenerales,
       recomendaciones_nivel:     recomendacionesNivel,
-      alerta_transferencia: alertaTransferencia,
       paciente: {
         id:            pac.id,
         identificador: pac.identificador,

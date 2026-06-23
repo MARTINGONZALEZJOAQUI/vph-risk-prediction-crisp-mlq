@@ -32,8 +32,7 @@ CREATE TABLE IF NOT EXISTS evaluaciones (
   probabilidad         REAL    NOT NULL,    -- probabilidad de positivo [0,1]
   confiabilidad        REAL    NOT NULL,    -- confiabilidad del resultado [0,1]
   nivel_riesgo         TEXT    DEFAULT 'pendiente',   -- bajo|medio|alto|pendiente
-  recomendaciones      TEXT,               -- JSON array, vacio mientras este pendiente
-  alerta_transferencia INTEGER DEFAULT 0   -- 0|1, 0 mientras umbrales esten pendientes
+  recomendaciones      TEXT                -- JSON array, vacio mientras este pendiente
 );
 
 -- VARIABLES DE EVALUACION (variables del modelo + adicionales del formulario)

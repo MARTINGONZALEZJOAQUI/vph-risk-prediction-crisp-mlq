@@ -186,6 +186,6 @@ Todo el desarrollo del modelo, desde la réplica del modelo de referencia y el e
 
 ## Nivel de riesgo y recomendaciones
 
-Además de la clasificación, cada evaluación recibe un nivel de riesgo a partir del porcentaje calculado. El nivel es bajo por debajo del 13 %, medio entre el 13 % y el 25 %, y alto del 25 % en adelante. El resultado se acompaña de un color según el nivel, verde para bajo, ámbar para medio y rojo para alto, y de una alerta de derivación urgente a especialista cuando la clasificación es Positiva y el nivel es alto.
+Además de la clasificación, cada evaluación recibe un nivel de riesgo a partir del porcentaje calculado. El nivel es bajo por debajo del 13 %, medio entre el 13 % y el 25 %, y alto del 25 % en adelante. El resultado se acompaña de un color según el nivel, verde para bajo, ámbar para medio y rojo para alto.
 
 La paciente recibe siempre un bloque de cuidados generales y, debajo, las recomendaciones propias del nivel obtenido. Los umbrales y los textos viven en `backend/artifacts/config_riesgo.json`, que el servidor lee en cada evaluación, de modo que se pueden ajustar sin tocar el código.
